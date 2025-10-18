@@ -5,10 +5,7 @@ import { config } from './config/env';
 import { connectDB } from './config/db';
 import { errorMiddleware } from './middleware/error.middleware';
 
-import userRoutes from './modules/user/user.route';
-import referralRoutes from './modules/referral/referral.route';
-import purchaseRoutes from './modules/purchase/purchase.route';
-import creditRoutes from './modules/credit/credit.route';
+import useRoutes from './routes/index';
 
 const app = express();
 
@@ -24,10 +21,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Referral & Credit System API', version: '1.0.0' });
 });
 
-app.use('/api/auth', userRoutes);
-app.use('/api/referrals', referralRoutes);
-app.use('/api/purchases', purchaseRoutes);
-app.use('/api/dashboard', creditRoutes);
+useRoutes(app);
 
 app.use(errorMiddleware);
 
