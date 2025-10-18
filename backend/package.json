@@ -1,0 +1,15 @@
+{
+  "name": "referral-credit-system-backend",
+  "version": "1.0.0",
+  "description": "Referral and Credit System Backend for Online Course Platform",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "clean": "rimraf dist"
+  },
+  "keywords": ["referral", "credit", "express", "typescript", "mongodb"],
+  "author": "",
+  "license": "ISC"
+}
