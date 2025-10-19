@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';
 import { useAuthStore } from '@store/authStore';
+import { useSession } from 'next-auth/react';
 import { courseAPI } from '@lib/api';
 import { CourseItem } from '@components/dashboard/CourseItem';
 import { Loader } from '@components/ui/Loader';
@@ -30,7 +31,9 @@ interface PaginationData {
 
 export default function CoursesPage() {
   const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated: storeAuth } = useAuthStore() as any;
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === 'authenticated' || !!storeAuth || !!(session as any)?.accessToken;
   const [courses, setCourses] = useState<Course[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
     currentPage: 1,
@@ -45,7 +48,7 @@ export default function CoursesPage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push(CLIENT_ROUTES.LOGIN);
+      router.push(CLIENT_ROUTES.HOME);
       return;
     }
   }, [isAuthenticated, router]);

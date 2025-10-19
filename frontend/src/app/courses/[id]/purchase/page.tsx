@@ -5,6 +5,7 @@ import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';
 import Image from 'next/image';
 import { useAuthStore } from '@store/authStore';
+import { useSession } from 'next-auth/react';
 import { courseAPI, purchaseAPI } from '@lib/api';
 import { Card } from '@components/ui/Card';
 import { Button } from '@components/ui/Button';
@@ -40,7 +41,9 @@ export default function CoursePurchasePage() {
   const router = useRouter();
   const params = useParams();
   const courseId = params.id as string;
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated: storeAuth } = useAuthStore() as any;
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === 'authenticated' || !!storeAuth || !!(session as any)?.accessToken;
   const searchParams = useSearchParams();
   const autoInitiatedRef = useRef(false);
   
@@ -60,8 +63,9 @@ export default function CoursePurchasePage() {
   });
 
   useEffect(() => {
+    // If the store says user is not authenticated, redirect to home per requirement
     if (!isAuthenticated) {
-      router.push(CLIENT_ROUTES.LOGIN);
+      router.push(CLIENT_ROUTES.HOME);
       return;
     }
 
