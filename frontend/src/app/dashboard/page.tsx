@@ -1,19 +1,33 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuthStore } from '@store/authStore';
 import { useDashboardStore } from '@store/dashboardStore';
-import { dashboardAPI } from '@lib/api';
+import { dashboardAPI, courseAPI } from '@lib/api';
 import { StatsCard } from '@components/dashboard/StatsCard';
 import { ReferralCard } from '@components/dashboard/ReferralCard';
-import { CourseCard } from '@components/dashboard/CourseCard';
+import { CourseItem } from '@components/dashboard/CourseItem';
 import { Loader } from '@components/ui/Loader';
+import { Button } from '@components/ui/Button';
+
+interface Course {
+  _id: string;
+  title: string;
+  description: string;
+  author: string;
+  price: number;
+  imageUrl: string;
+  category?: string;
+}
 
 export default function DashboardPage() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const { dashboard, loading, setDashboard, setLoading } = useDashboardStore();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -33,7 +47,20 @@ export default function DashboardPage() {
       }
     };
 
+    const fetchLatestCourses = async () => {
+      try {
+        setLoadingCourses(true);
+        const response = await courseAPI.getLatest(6);
+        setCourses(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch courses', error);
+      } finally {
+        setLoadingCourses(false);
+      }
+    };
+
     fetchDashboard();
+    fetchLatestCourses();
   }, [isAuthenticated, router, setDashboard, setLoading]);
 
   if (loading || !dashboard) {
@@ -73,7 +100,34 @@ export default function DashboardPage() {
         </div>
 
         <ReferralCard referralLink={dashboard.referralLink} />
-        <CourseCard />
+
+        {/* Latest Courses Section */}
+        <div className="mt-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-slate-900">Latest Courses</h2>
+            <Link href="/courses">
+              <Button variant="outline" size="sm">
+                View All Courses
+              </Button>
+            </Link>
+          </div>
+
+          {loadingCourses ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader size="md" />
+            </div>
+          ) : courses.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course, index) => (
+                <CourseItem key={course._id} course={course} index={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-white rounded-xl border-2 border-dashed border-slate-300">
+              <p className="text-slate-600">No courses available at the moment.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

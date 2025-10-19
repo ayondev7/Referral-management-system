@@ -68,7 +68,7 @@ export const authAPI = {
 };
 
 export const purchaseAPI = {
-  initiate: (data: { courseName: string; amount: number }) =>
+  initiate: (data: { courseId: string; courseName: string; amount: number }) =>
     api.post(PURCHASE_ROUTES.INITIATE, data),
   pay: (purchaseId: string, data: { cardNumber: string; expiry: string; cvv: string; cardHolder: string }) =>
     api.post(PURCHASE_ROUTES.PAY(purchaseId), data),
@@ -82,4 +82,13 @@ export const dashboardAPI = {
 export const referralAPI = {
   getAll: () => api.get(REFERRAL_ROUTES.GET_ALL),
   getStats: () => api.get(REFERRAL_ROUTES.GET_STATS),
+};
+
+export const courseAPI = {
+  getAll: (params?: { page?: number; limit?: number; category?: string }) =>
+    api.get('/courses', { params }),
+  getLatest: (limit?: number) =>
+    api.get('/courses/latest', { params: { limit } }),
+  getById: (id: string) =>
+    api.get(`/courses/${id}`),
 };
