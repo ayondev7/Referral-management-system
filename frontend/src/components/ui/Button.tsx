@@ -19,10 +19,10 @@ export const Button: React.FC<ButtonProps> = ({
   const baseClass = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 border-none outline-none';
   
   const variantClasses = {
-    primary: 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-500/40',
-    secondary: 'bg-gradient-to-r from-amber-500 to-red-500 text-white shadow-lg shadow-amber-500/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-500/40',
-    outline: 'bg-transparent text-blue-500 border-2 border-blue-500 hover:bg-blue-500 hover:text-white',
-    danger: 'bg-red-500 text-white hover:bg-red-600 hover:-translate-y-px hover:shadow-lg',
+    primary: 'bg-blue-600 text-white shadow-sm hover:bg-blue-700 hover:shadow-md',
+    secondary: 'bg-amber-600 text-white shadow-sm hover:bg-amber-700 hover:shadow-md',
+    outline: 'bg-transparent text-blue-600 border-2 border-blue-600 hover:bg-blue-600 hover:text-white',
+    danger: 'bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-md',
   };
   
   const sizeClasses = {

@@ -90,7 +90,7 @@ export const CourseCard: React.FC = () => {
         {!showPaymentForm ? (
           <div className="flex flex-col gap-4">
             {courses.map((course) => (
-              <div key={course.name} className="flex justify-between items-center p-5 border-2 border-slate-200 rounded-xl bg-white transition-all duration-300 hover:translate-x-1.5 hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-500">
+              <div key={course.name} className="flex justify-between items-center p-5 border-2 border-slate-200 rounded-xl bg-white transition-all duration-300 hover:translate-x-1 hover:shadow-md hover:border-blue-600">
                 <div className="flex flex-col gap-1">
                   <h4 className="text-base font-semibold text-slate-900">{course.name}</h4>
                   <p className="text-xl font-bold text-blue-500">${course.price}</p>

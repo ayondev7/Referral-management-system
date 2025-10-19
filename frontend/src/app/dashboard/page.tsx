@@ -45,7 +45,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-140px)] p-8 bg-gradient-to-b from-blue-50 to-slate-50">
+    <div className="min-h-[calc(100vh-140px)] p-8 bg-slate-50">
       <div className="max-w-screen-xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
