@@ -76,9 +76,8 @@ export default function CoursePurchasePage() {
         const courseData = response.data.data;
         setCourse(courseData);
 
-        // If the URL includes ?checkout=true, auto-initiate the purchase and show the payment form
-        const checkout = searchParams?.get('checkout') === 'true';
-        if (checkout && courseData && !autoInitiatedRef.current) {
+        // Auto-initiate the purchase after fetching the course so the payment form is ready
+        if (courseData && !autoInitiatedRef.current) {
           autoInitiatedRef.current = true;
           try {
             setProcessing(true);
@@ -172,104 +171,58 @@ export default function CoursePurchasePage() {
           transition={{ duration: 0.4 }}
         >
           <Card>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Course Image */}
-              <div className="relative h-64 md:h-full min-h-[300px] rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
-                <Image
-                  src={course.imageUrl}
-                  alt={course.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Complete Your Payment</h3>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <Input
+                  label="Card Number"
+                  {...register('cardNumber')}
+                  error={errors.cardNumber?.message}
+                  placeholder="1234 5678 9012 3456"
                 />
-              </div>
 
-              {/* Course Details */}
-              <div className="flex flex-col">
-                <div className="mb-6">
-                  {course.category && (
-                    <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                      {course.category}
-                    </span>
-                  )}
-                  <h1 className="text-3xl font-bold text-slate-900 mb-3">{course.title}</h1>
-                  <p className="text-sm text-slate-600 mb-4">by {course.author}</p>
-                  <p className="text-slate-700 leading-relaxed">{course.description}</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    label="Expiry"
+                    {...register('expiry')}
+                    error={errors.expiry?.message}
+                    placeholder="MM/YY"
+                  />
+                  <Input
+                    label="CVV"
+                    {...register('cvv')}
+                    error={errors.cvv?.message}
+                    placeholder="123"
+                  />
                 </div>
 
-                <div className="mt-auto">
-                  <div className="flex items-baseline gap-2 mb-6">
-                    <span className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      ${course.price}
-                    </span>
-                  </div>
+                <Input
+                  label="Card Holder"
+                  {...register('cardHolder')}
+                  error={errors.cardHolder?.message}
+                  placeholder="John Doe"
+                />
 
-                  {!showPaymentForm ? (
-                    <Button
-                      onClick={handleInitiatePurchase}
-                      loading={processing}
-                      className="w-full"
-                      size="lg"
-                    >
-                      Purchase Course
-                    </Button>
-                  ) : (
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-slate-900 mb-4">
-                        Complete Your Payment
-                      </h3>
-                      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                        <Input
-                          label="Card Number"
-                          {...register('cardNumber')}
-                          error={errors.cardNumber?.message}
-                          placeholder="1234 5678 9012 3456"
-                        />
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <Input
-                            label="Expiry"
-                            {...register('expiry')}
-                            error={errors.expiry?.message}
-                            placeholder="MM/YY"
-                          />
-                          <Input
-                            label="CVV"
-                            {...register('cvv')}
-                            error={errors.cvv?.message}
-                            placeholder="123"
-                          />
-                        </div>
-
-                        <Input
-                          label="Card Holder"
-                          {...register('cardHolder')}
-                          error={errors.cardHolder?.message}
-                          placeholder="John Doe"
-                        />
-
-                        <div className="flex gap-4 pt-2">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                              setShowPaymentForm(false);
-                              setPurchaseId(null);
-                              reset();
-                            }}
-                            className="flex-1"
-                          >
-                            Cancel
-                          </Button>
-                          <Button type="submit" loading={processing} className="flex-1">
-                            Pay ${course.price}
-                          </Button>
-                        </div>
-                      </form>
-                    </div>
-                  )}
+                <div className="flex gap-4 pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      // reset local state and navigate back to courses list
+                      setShowPaymentForm(false);
+                      setPurchaseId(null);
+                      reset();
+                      router.push(CLIENT_ROUTES.COURSES);
+                    }}
+                    className="flex-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" loading={processing} className="flex-1" disabled={!purchaseId}>
+                    Pay ${course?.price}
+                  </Button>
                 </div>
-              </div>
+              </form>
             </div>
           </Card>
         </motion.div>
