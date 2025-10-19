@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { CLIENT_ROUTES } from '@/routes';
 import { useAuthStore } from '@store/authStore';
 import { courseAPI } from '@lib/api';
 import { CourseItem } from '@components/dashboard/CourseItem';
@@ -44,7 +45,7 @@ export default function CoursesPage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/login');
+      router.push(CLIENT_ROUTES.LOGIN);
       return;
     }
   }, [isAuthenticated, router]);

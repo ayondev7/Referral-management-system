@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Loader } from '@components/ui/Loader';
+import { CLIENT_ROUTES } from '@/routes';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -15,7 +16,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/');
+      router.push(CLIENT_ROUTES.HOME);
     }
   }, [status, router]);
 

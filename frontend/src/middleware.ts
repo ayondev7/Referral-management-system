@@ -1,14 +1,16 @@
 import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
+import { CLIENT_ROUTES } from '@/routes';
+import { AUTH_ROUTES } from '@/routes/authRoutes';
 
 export default withAuth(
   async function middleware(req) {
     const token = req.nextauth.token;
     const pathname = req.nextUrl.pathname;
 
-    // Protected routes
-    const protectedRoutes = ['/dashboard', '/courses', '/purchase'];
-    const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
+  // Protected routes
+  const protectedRoutes = [CLIENT_ROUTES.DASHBOARD, CLIENT_ROUTES.COURSES, CLIENT_ROUTES.PURCHASE];
+  const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
 
     // If trying to access protected route without token, redirect to home
     if (isProtectedRoute && !token) {
@@ -23,7 +25,8 @@ export default withAuth(
           return NextResponse.redirect(new URL('/', req.url));
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+        // Use centralized auth route for verifying token
+        const response = await fetch(AUTH_ROUTES.ME, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

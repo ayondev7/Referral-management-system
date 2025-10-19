@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions, User as NextAuthUser } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import axios from 'axios';
-import { BASE_URL } from '@/routes';
+import { AUTH_ROUTES } from '@/routes/authRoutes';
 
 interface BackendUser {
   id: string;
@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const response = await axios.post<BackendAuthResponse>(
-            `${BASE_URL}/api/auth/login`,
+            AUTH_ROUTES.LOGIN,
             {
               email: credentials.email,
               password: credentials.password,

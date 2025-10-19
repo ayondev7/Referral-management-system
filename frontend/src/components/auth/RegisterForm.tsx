@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { authAPI } from '@lib/api';
 import { Input } from '@components/ui/Input';
 import { Button } from '@components/ui/Button';
+import { CLIENT_ROUTES } from '@/routes';
 
 const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
@@ -65,7 +66,7 @@ export const RegisterForm: React.FC = () => {
 
       if (result?.ok) {
         toast.success('Registration successful! Welcome!');
-        router.push('/dashboard');
+        router.push(CLIENT_ROUTES.DASHBOARD);
         router.refresh();
       }
     } catch (error: unknown) {
@@ -126,7 +127,7 @@ export const RegisterForm: React.FC = () => {
 
       <p className="text-center text-sm text-slate-900 opacity-80">
         Already have an account?{' '}
-        <Link href="/" className="text-blue-500 font-semibold hover:underline">Login</Link>
+        <Link href={CLIENT_ROUTES.HOME} className="text-blue-500 font-semibold hover:underline">Login</Link>
       </p>
     </form>
   );

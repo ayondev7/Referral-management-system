@@ -1,7 +1,7 @@
 import { useQuery } from '@/hooks';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
-import { BASE_URL } from '@/routes';
+import { AUTH_ROUTES } from '@/routes/authRoutes';
 
 interface User {
   id: string;
@@ -21,7 +21,7 @@ export function useUser() {
         throw new Error('No access token available');
       }
 
-      const response = await axios.get(`${BASE_URL}/api/users/me`, {
+      const response = await axios.get(AUTH_ROUTES.ME, {
         headers: {
           Authorization: `Bearer ${session.accessToken}`,
         },

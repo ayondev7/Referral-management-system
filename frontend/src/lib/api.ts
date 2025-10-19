@@ -5,6 +5,8 @@ import { PURCHASE_ROUTES } from '@/routes/purchaseRoutes';
 import { REFERRAL_ROUTES } from '@/routes/referralRoutes';
 import { DASHBOARD_ROUTES } from '@/routes/dashboardRoutes';
 import { BASE_URL } from '@/routes';
+import { COURSE_ROUTES } from '@/routes/courseRoutes';
+import { CLIENT_ROUTES } from '@/routes';
 
 export const api = axios.create({
   baseURL: `${BASE_URL}/api`,
@@ -35,7 +37,7 @@ api.interceptors.response.use(
       // Token is invalid or expired, NextAuth will handle this
       // Redirect to home page
       if (typeof window !== 'undefined') {
-        window.location.href = '/';
+        window.location.href = CLIENT_ROUTES.HOME;
       }
     }
     return Promise.reject(error);
@@ -66,9 +68,9 @@ export const referralAPI = {
 
 export const courseAPI = {
   getAll: (params?: { page?: number; limit?: number; category?: string }) =>
-    api.get('/courses', { params }),
+    api.get(COURSE_ROUTES.GET_ALL, { params }),
   getLatest: (limit?: number) =>
-    api.get('/courses/latest', { params: { limit } }),
+    api.get(COURSE_ROUTES.GET_LATEST, { params: { limit } }),
   getById: (id: string) =>
-    api.get(`/courses/${id}`),
+    api.get(COURSE_ROUTES.GET_BY_ID(id)),
 };

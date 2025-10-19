@@ -9,6 +9,7 @@ import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { Input } from '@components/ui/Input';
 import { Button } from '@components/ui/Button';
+import { CLIENT_ROUTES } from '@/routes';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
@@ -46,7 +47,7 @@ export const LoginForm: React.FC = () => {
 
       if (result?.ok) {
         toast.success('Login successful!');
-        router.push('/dashboard');
+        router.push(CLIENT_ROUTES.DASHBOARD);
         router.refresh();
       }
     } catch (error: unknown) {
@@ -83,7 +84,7 @@ export const LoginForm: React.FC = () => {
 
       <p className="text-center text-sm text-slate-900 opacity-80">
         Don&apos;t have an account?{' '}
-        <a href="/register" className="text-blue-500 font-semibold hover:underline">Register</a>
+        <a href={CLIENT_ROUTES.REGISTER} className="text-blue-500 font-semibold hover:underline">Register</a>
       </p>
     </form>
   );

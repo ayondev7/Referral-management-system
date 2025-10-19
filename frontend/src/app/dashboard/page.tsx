@@ -10,6 +10,7 @@ import { ReferralCard } from '@components/dashboard/ReferralCard';
 import { CourseItem } from '@components/dashboard/CourseItem';
 import { Loader } from '@components/ui/Loader';
 import { Button } from '@components/ui/Button';
+import { CLIENT_ROUTES } from '@/routes';
 
 interface Course {
   _id: string;
@@ -102,7 +103,7 @@ export default function DashboardPage() {
         <div className="mt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-slate-900">Latest Courses</h2>
-            <Link href="/courses">
+              <Link href={CLIENT_ROUTES.COURSES}>
               <Button variant="outline" size="sm">
                 View All Courses
               </Button>

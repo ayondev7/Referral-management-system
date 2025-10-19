@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
+import { CLIENT_ROUTES } from '@/routes';
 import Image from 'next/image';
 import { useAuthStore } from '@store/authStore';
 import { courseAPI, purchaseAPI } from '@lib/api';
@@ -60,7 +61,7 @@ export default function CoursePurchasePage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/login');
+      router.push(CLIENT_ROUTES.LOGIN);
       return;
     }
 
@@ -95,7 +96,7 @@ export default function CoursePurchasePage() {
       } catch (error) {
         console.error('Failed to fetch course', error);
         toast.error('Course not found');
-        router.push('/courses');
+        router.push(CLIENT_ROUTES.COURSES);
       } finally {
         setLoading(false);
       }
@@ -135,7 +136,7 @@ export default function CoursePurchasePage() {
       await purchaseAPI.pay(purchaseId, data);
       toast.success('Payment successful! Course purchased.');
       reset();
-      router.push('/dashboard');
+  router.push(CLIENT_ROUTES.DASHBOARD);
     } catch (error: unknown) {
       toast.error(
         (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
