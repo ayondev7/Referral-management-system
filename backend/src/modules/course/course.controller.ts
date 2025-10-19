@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { Course } from './course.model';
 import { asyncHandler } from '../../utils/asyncHandler';
 
-// Get all courses with pagination
 export const getAllCourses = asyncHandler(async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 9;
@@ -10,16 +9,13 @@ export const getAllCourses = asyncHandler(async (req: Request, res: Response) =>
 
   const skip = (page - 1) * limit;
 
-  // Build query
   const query: any = { isActive: true };
   if (category) {
     query.category = category;
   }
 
-  // Get total count for pagination
   const total = await Course.countDocuments(query);
 
-  // Get courses with pagination
   const courses = await Course.find(query)
     .sort({ createdAt: -1 })
     .skip(skip)
@@ -44,7 +40,6 @@ export const getAllCourses = asyncHandler(async (req: Request, res: Response) =>
   });
 });
 
-// Get course by ID
 export const getCourseById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -64,7 +59,6 @@ export const getCourseById = asyncHandler(async (req: Request, res: Response) =>
   });
 });
 
-// Get latest courses (for dashboard)
 export const getLatestCourses = asyncHandler(async (req: Request, res: Response) => {
   const limit = parseInt(req.query.limit as string) || 6;
 
@@ -79,11 +73,9 @@ export const getLatestCourses = asyncHandler(async (req: Request, res: Response)
   });
 });
 
-// Create course (Admin only - you can add auth middleware later)
 export const createCourse = asyncHandler(async (req: Request, res: Response) => {
   const { title, description, author, price, imageUrl, category } = req.body;
 
-  // Validation
   if (!title || !description || !author || price === undefined || !imageUrl) {
     res.status(400).json({
       success: false,
@@ -108,7 +100,6 @@ export const createCourse = asyncHandler(async (req: Request, res: Response) => 
   });
 });
 
-// Update course (Admin only)
 export const updateCourse = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description, author, price, imageUrl, category, isActive } = req.body;
@@ -123,7 +114,6 @@ export const updateCourse = asyncHandler(async (req: Request, res: Response) => 
     return;
   }
 
-  // Update fields
   if (title !== undefined) course.title = title;
   if (description !== undefined) course.description = description;
   if (author !== undefined) course.author = author;
@@ -141,7 +131,6 @@ export const updateCourse = asyncHandler(async (req: Request, res: Response) => 
   });
 });
 
-// Delete course (Admin only - soft delete)
 export const deleteCourse = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -155,7 +144,6 @@ export const deleteCourse = asyncHandler(async (req: Request, res: Response) => 
     return;
   }
 
-  // Soft delete
   course.isActive = false;
   await course.save();
 

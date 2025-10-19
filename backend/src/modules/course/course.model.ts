@@ -57,7 +57,6 @@ const courseSchema = new Schema<ICourse>(
   }
 );
 
-// Index for better query performance
 courseSchema.index({ isActive: 1, createdAt: -1 });
 courseSchema.index({ category: 1 });
 

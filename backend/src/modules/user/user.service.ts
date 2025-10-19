@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
 import { User, IUser } from './user.model';
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 import { nanoid } from 'nanoid';
@@ -51,8 +52,8 @@ export class UserService {
       console.log(`Referral record created: referrer=${referrerId}, referred=${user._id}`);
     }
 
-    const accessToken = generateAccessToken({ id: user._id.toString(), email: user.email });
-    const refreshToken = generateRefreshToken({ id: user._id.toString(), email: user.email });
+    const accessToken = generateAccessToken({ id: (user._id as mongoose.Types.ObjectId).toString(), email: user.email });
+    const refreshToken = generateRefreshToken({ id: (user._id as mongoose.Types.ObjectId).toString(), email: user.email });
 
     return {
       user: {
@@ -82,8 +83,8 @@ export class UserService {
       throw error;
     }
 
-    const accessToken = generateAccessToken({ id: user._id.toString(), email: user.email });
-    const refreshToken = generateRefreshToken({ id: user._id.toString(), email: user.email });
+    const accessToken = generateAccessToken({ id: (user._id as mongoose.Types.ObjectId).toString(), email: user.email });
+    const refreshToken = generateRefreshToken({ id: (user._id as mongoose.Types.ObjectId).toString(), email: user.email });
 
     return {
       user: {

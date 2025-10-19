@@ -112,7 +112,6 @@ export class PurchaseService {
   async getUserPurchasedCourses(userId: string, page: number, limit: number) {
     const skip = (page - 1) * limit;
 
-    // Only get paid purchases
     const query = { userId, status: 'paid' };
 
     const [purchases, total] = await Promise.all([
