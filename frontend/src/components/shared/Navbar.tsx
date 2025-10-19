@@ -1,10 +1,9 @@
  'use client';
-
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { useUser } from '@/hooks/useUser';
+import { useUser } from '@/hooks/userHooks';
 import Image from 'next/image';
 import { Button } from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';

@@ -15,3 +15,6 @@ export function createQueryClient() {
 
 // Export query hooks for use throughout the app
 export { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+export { useUser } from './userHooks';
+export { useCourse } from './courseHooks';
+export { useInitiatePurchase, usePayPurchase } from './purchaseHooks';
