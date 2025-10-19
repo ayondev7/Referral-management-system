@@ -20,26 +20,27 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased bg-slate-50 text-slate-900 min-h-screen overflow-x-hidden`}>
         <Layout>{children}</Layout>
         <Toaster
-          position="top-right"
+          position="top-center"
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#1e293b',
-              color: '#f8fafc',
+              background: '#ffffff',
+              color: '#0f172a',
               borderRadius: '0.75rem',
               padding: '1rem',
-              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
+              border: '1px solid #e2e8f0',
             },
             success: {
               iconTheme: {
                 primary: '#10b981',
-                secondary: '#f8fafc',
+                secondary: '#ffffff',
               },
             },
             error: {
               iconTheme: {
                 primary: '#ef4444',
-                secondary: '#f8fafc',
+                secondary: '#ffffff',
               },
             },
           }}
