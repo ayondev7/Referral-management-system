@@ -57,7 +57,6 @@ export default function CoursePurchasePage() {
         {
           onSuccess: (data) => {
             setPurchaseId(data.purchaseId);
-            infoToast('Please complete your payment details');
           },
           onError: (error) => {
             console.error('Auto-initiate purchase failed', error);
