@@ -12,7 +12,7 @@ export class UserService {
   }) {
     const existingUser = await User.findOne({ email: data.email });
     if (existingUser) {
-      const error: any = new Error('User already exists');
+      const error: any = new Error('An account with this email already exists. Please log in instead');
       error.statusCode = 400;
       throw error;
     }
@@ -22,7 +22,7 @@ export class UserService {
     if (data.referralCode) {
       const referrer = await User.findOne({ referralCode: data.referralCode });
       if (!referrer) {
-        const error: any = new Error('Invalid referral code');
+        const error: any = new Error('The referral code you entered is not valid. Please check and try again');
         error.statusCode = 400;
         throw error;
       }
@@ -70,14 +70,14 @@ export class UserService {
   async login(email: string, password: string) {
     const user = await User.findOne({ email });
     if (!user) {
-      const error: any = new Error('Invalid credentials');
+      const error: any = new Error('Email or password is incorrect. Please try again');
       error.statusCode = 401;
       throw error;
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
-      const error: any = new Error('Invalid credentials');
+      const error: any = new Error('Email or password is incorrect. Please try again');
       error.statusCode = 401;
       throw error;
     }
@@ -101,7 +101,7 @@ export class UserService {
   async getUserById(userId: string) {
     const user = await User.findById(userId);
     if (!user) {
-      const error: any = new Error('User not found');
+      const error: any = new Error('We couldn\'t find your account. Please contact support');
       error.statusCode = 404;
       throw error;
     }
@@ -111,7 +111,7 @@ export class UserService {
   async addCredits(userId: string, amount: number) {
     const user = await User.findById(userId);
     if (!user) {
-      const error: any = new Error('User not found');
+      const error: any = new Error('We couldn\'t find your account. Please contact support');
       error.statusCode = 404;
       throw error;
     }

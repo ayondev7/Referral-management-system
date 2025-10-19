@@ -29,13 +29,13 @@ export class PurchaseService {
   ) {
     const purchase = await Purchase.findOne({ _id: purchaseId, userId });
     if (!purchase) {
-      const error: any = new Error('Purchase not found');
+      const error: any = new Error('We couldn\'t find this purchase. Please try again');
       error.statusCode = 404;
       throw error;
     }
 
     if (purchase.status !== 'pending') {
-      const error: any = new Error('Purchase already processed');
+      const error: any = new Error('This purchase has already been completed');
       error.statusCode = 400;
       throw error;
     }
@@ -76,25 +76,25 @@ export class PurchaseService {
     cardHolder: string;
   }) {
     if (!paymentData.cardNumber || paymentData.cardNumber.length < 13) {
-      const error: any = new Error('Invalid card number');
+      const error: any = new Error('Please enter a valid card number');
       error.statusCode = 400;
       throw error;
     }
 
     if (!paymentData.expiry || !/^\d{2}\/\d{2}$/.test(paymentData.expiry)) {
-      const error: any = new Error('Invalid expiry date format (MM/YY)');
+      const error: any = new Error('Please enter expiry date in MM/YY format');
       error.statusCode = 400;
       throw error;
     }
 
     if (!paymentData.cvv || paymentData.cvv.length < 3) {
-      const error: any = new Error('Invalid CVV');
+      const error: any = new Error('Please enter a valid CVV code');
       error.statusCode = 400;
       throw error;
     }
 
     if (!paymentData.cardHolder || paymentData.cardHolder.trim().length === 0) {
-      const error: any = new Error('Card holder name is required');
+      const error: any = new Error('Please enter the card holder name');
       error.statusCode = 400;
       throw error;
     }

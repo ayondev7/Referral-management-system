@@ -7,19 +7,15 @@ import { z } from 'zod';
 const userService = new UserService();
 
 const registerSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string().min(1, 'Please confirm your password'),
+  name: z.string().min(1, 'Please enter your name'),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
   referralCode: z.string().optional()
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
 });
 
 const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required')
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(1, 'Please enter your password')
 });
 
 const refreshSchema = z.object({
@@ -37,8 +33,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
-  const { confirmPassword, ...registerData } = validation.data;
-  const result = await userService.register(registerData);
+  const result = await userService.register(validation.data);
   console.log(`User registered: ${result.user.email}`);
   return res.status(201).json(result);
 });
@@ -75,7 +70,7 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
     console.log(`Token refreshed for user: ${decoded.email}`);
     return res.status(200).json({ accessToken });
   } catch (error) {
-    const err: any = new Error('Invalid refresh token');
+    const err: any = new Error('Your session has expired. Please log in again');
     err.statusCode = 401;
     throw err;
   }
