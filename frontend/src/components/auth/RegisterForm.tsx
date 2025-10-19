@@ -12,10 +12,14 @@ import { Input } from '@components/ui/Input';
 import { Button } from '@components/ui/Button';
 
 const registerSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
+  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
+  confirmPassword: z.string().min(1, 'Please confirm your password'),
   referralCode: z.string().optional(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
 });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -42,14 +46,16 @@ export const RegisterForm: React.FC = () => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setLoading(true);
-      const response = await authAPI.register(data);
+      const { confirmPassword, ...registerData } = data;
+      const response = await authAPI.register(registerData);
       const { user, accessToken, refreshToken } = response.data;
       
       setAuth(user, accessToken, refreshToken);
-      toast.success('Registration successful!');
+      toast.success('Registration successful! Welcome!');
       router.push('/dashboard');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -81,6 +87,14 @@ export const RegisterForm: React.FC = () => {
         {...register('password')}
         error={errors.password?.message}
         placeholder="Enter your password"
+      />
+
+      <Input
+        label="Confirm Password"
+        type="password"
+        {...register('confirmPassword')}
+        error={errors.confirmPassword?.message}
+        placeholder="Confirm your password"
       />
 
       <Input

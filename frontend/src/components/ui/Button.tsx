@@ -1,4 +1,5 @@
 import React from 'react';
+import { Loader } from 'react-icons/lu';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'danger';
@@ -40,7 +41,10 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {loading ? (
-        <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+        <>
+          <Loader className="w-4 h-4 animate-spin mr-2" />
+          Loading...
+        </>
       ) : (
         children
       )}
