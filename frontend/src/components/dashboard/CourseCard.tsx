@@ -46,7 +46,7 @@ export const CourseCard: React.FC = () => {
       setLoading(true);
       setSelectedCourse(course);
       const response = await purchaseAPI.initiate({
-        courseId: (course as any).id || '',
+        courseId: course.id || '',
         courseName: course.name,
         amount: course.price,
       });

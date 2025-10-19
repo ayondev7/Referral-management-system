@@ -18,9 +18,14 @@ export default withAuth(
     // Verify token with backend for protected routes
     if (isProtectedRoute && token) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+        const accessToken = (token as any)?.accessToken;
+        if (!accessToken) {
+          return NextResponse.redirect(new URL('/', req.url));
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
           headers: {
-            Authorization: `Bearer ${token.accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 

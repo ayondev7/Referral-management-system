@@ -1,6 +1,5 @@
 import NextAuth, { NextAuthOptions, User as NextAuthUser } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { JWT } from 'next-auth/jwt';
 import axios from 'axios';
 import { BASE_URL } from '@/routes';
 
@@ -17,6 +16,8 @@ interface BackendAuthResponse {
   accessToken: string;
   refreshToken: string;
 }
+
+type AuthUser = BackendUser & { accessToken: string; refreshToken: string };
 
 declare module 'next-auth' {
   interface Session {
@@ -54,7 +55,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const response = await axios.post<BackendAuthResponse>(
-            `${BASE_URL}/api/users/login`,
+            `${BASE_URL}/api/auth/login`,
             {
               email: credentials.email,
               password: credentials.password,
@@ -68,8 +69,10 @@ export const authOptions: NextAuthOptions = {
             accessToken,
             refreshToken,
           } as NextAuthUser;
-        } catch (error: any) {
-          const message = error.response?.data?.message || 'Login failed';
+        } catch (err) {
+          // Prefer backend-provided message, fall back to response status text or a generic message
+          const errorObj = err as { response?: { data?: { message?: string }; statusText?: string } };
+          const message = errorObj.response?.data?.message || errorObj.response?.statusText || 'Login failed';
           throw new Error(message);
         }
       },
@@ -80,10 +83,10 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user }) {
       // Initial sign in
       if (user) {
-        const authUser = user as any;
+        const authUser = user as AuthUser;
         token.user = {
           id: authUser.id,
           name: authUser.name,
