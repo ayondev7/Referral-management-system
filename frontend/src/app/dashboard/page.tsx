@@ -38,23 +38,23 @@ export default function DashboardPage() {
 
   if (loading || !dashboard) {
     return (
-      <div className="dashboard-loading">
+      <div className="min-h-[calc(100vh-140px)] flex items-center justify-center">
         <Loader size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="dashboard-page">
-      <div className="dashboard-container">
-        <div className="dashboard-header">
-          <h1 className="dashboard-title">Dashboard</h1>
-          <p className="dashboard-subtitle">
+    <div className="min-h-[calc(100vh-140px)] p-8 bg-gradient-to-b from-blue-50 to-slate-50">
+      <div className="max-w-screen-xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
+          <p className="text-base text-slate-900 opacity-70">
             Manage your referrals and purchase courses
           </p>
         </div>
 
-        <div className="stats-grid">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <StatsCard
             title="Total Referrals"
             value={dashboard.totalReferredUsers}

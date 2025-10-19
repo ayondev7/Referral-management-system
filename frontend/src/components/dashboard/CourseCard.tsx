@@ -82,17 +82,18 @@ export const CourseCard: React.FC = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.4 }}
+      className="mb-8"
     >
-      <Card className="course-card">
-        <h3 className="course-title">Purchase a Course</h3>
+      <Card>
+        <h3 className="text-2xl font-semibold mb-6 text-slate-900">Purchase a Course</h3>
 
         {!showPaymentForm ? (
-          <div className="course-list">
+          <div className="flex flex-col gap-4">
             {courses.map((course) => (
-              <div key={course.name} className="course-item">
-                <div className="course-info">
-                  <h4 className="course-name">{course.name}</h4>
-                  <p className="course-price">${course.price}</p>
+              <div key={course.name} className="flex justify-between items-center p-5 border-2 border-slate-200 rounded-xl bg-white transition-all duration-300 hover:translate-x-1.5 hover:shadow-lg hover:shadow-blue-500/20 hover:border-blue-500">
+                <div className="flex flex-col gap-1">
+                  <h4 className="text-base font-semibold text-slate-900">{course.name}</h4>
+                  <p className="text-xl font-bold text-blue-500">${course.price}</p>
                 </div>
                 <Button
                   onClick={() => handleSelectCourse(course)}
@@ -105,8 +106,8 @@ export const CourseCard: React.FC = () => {
             ))}
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="payment-form">
-            <h4 className="payment-title">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+            <h4 className="text-lg font-semibold mb-2 text-slate-900">
               Complete Payment for {selectedCourse?.name}
             </h4>
 
@@ -117,7 +118,7 @@ export const CourseCard: React.FC = () => {
               placeholder="1234 5678 9012 3456"
             />
 
-            <div className="payment-row">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Expiry"
                 {...register('expiry')}
@@ -139,7 +140,7 @@ export const CourseCard: React.FC = () => {
               placeholder="John Doe"
             />
 
-            <div className="payment-actions">
+            <div className="flex gap-4 mt-4 flex-col sm:flex-row">
               <Button
                 type="button"
                 variant="outline"
@@ -149,10 +150,11 @@ export const CourseCard: React.FC = () => {
                   setSelectedCourse(null);
                   reset();
                 }}
+                className="flex-1"
               >
                 Cancel
               </Button>
-              <Button type="submit" loading={loading}>
+              <Button type="submit" loading={loading} className="flex-1">
                 Pay ${selectedCourse?.price}
               </Button>
             </div>

@@ -1,9 +1,12 @@
 import axios from 'axios';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { AUTH_ROUTES } from '@/routes/authRoutes';
+import { PURCHASE_ROUTES } from '@/routes/purchaseRoutes';
+import { REFERRAL_ROUTES } from '@/routes/referralRoutes';
+import { DASHBOARD_ROUTES } from '@/routes/dashboardRoutes';
+import { BASE_URL } from '@/routes';
 
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: `${BASE_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -36,7 +39,7 @@ api.interceptors.response.use(
           throw new Error('No refresh token');
         }
 
-        const { data } = await axios.post(`${API_URL}/auth/refresh`, {
+        const { data } = await axios.post(AUTH_ROUTES.REFRESH, {
           refreshToken,
         });
 
@@ -47,7 +50,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        window.location.href = '/';
         return Promise.reject(refreshError);
       }
     }
@@ -58,25 +61,25 @@ api.interceptors.response.use(
 
 export const authAPI = {
   register: (data: { name: string; email: string; password: string; referralCode?: string }) =>
-    api.post('/auth/register', data),
+    axios.post(AUTH_ROUTES.REGISTER, data),
   login: (data: { email: string; password: string }) =>
-    api.post('/auth/login', data),
-  logout: () => api.post('/auth/logout'),
+    axios.post(AUTH_ROUTES.LOGIN, data),
+  logout: () => axios.post(AUTH_ROUTES.LOGOUT),
 };
 
 export const purchaseAPI = {
   initiate: (data: { courseName: string; amount: number }) =>
-    api.post('/purchases/initiate', data),
+    api.post(PURCHASE_ROUTES.INITIATE, data),
   pay: (purchaseId: string, data: { cardNumber: string; expiry: string; cvv: string; cardHolder: string }) =>
-    api.post(`/purchases/pay/${purchaseId}`, data),
-  getAll: () => api.get('/purchases'),
+    api.post(PURCHASE_ROUTES.PAY(purchaseId), data),
+  getAll: () => api.get(PURCHASE_ROUTES.GET_ALL),
 };
 
 export const dashboardAPI = {
-  get: () => api.get('/dashboard'),
+  get: () => api.get(DASHBOARD_ROUTES.GET),
 };
 
 export const referralAPI = {
-  getAll: () => api.get('/referrals'),
-  getStats: () => api.get('/referrals/stats'),
+  getAll: () => api.get(REFERRAL_ROUTES.GET_ALL),
+  getStats: () => api.get(REFERRAL_ROUTES.GET_STATS),
 };

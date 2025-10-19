@@ -48,8 +48,8 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
-      <h1 className="auth-title">Login</h1>
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-white/98 p-12 rounded-3xl shadow-2xl flex flex-col gap-6 backdrop-blur-md border border-white/30">
+      <h1 className="text-3xl font-bold text-center text-slate-900 mb-2">Login</h1>
       
       <Input
         label="Email"
@@ -71,9 +71,9 @@ export const LoginForm: React.FC = () => {
         Login
       </Button>
 
-      <p className="auth-link">
+      <p className="text-center text-sm text-slate-900 opacity-80">
         Don&apos;t have an account?{' '}
-        <a href="/register" className="text-primary">Register</a>
+        <a href="/register" className="text-blue-500 font-semibold hover:underline">Register</a>
       </p>
     </form>
   );

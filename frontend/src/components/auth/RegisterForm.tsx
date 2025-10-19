@@ -56,8 +56,8 @@ export const RegisterForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
-      <h1 className="auth-title">Register</h1>
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-white/98 p-12 rounded-3xl shadow-2xl flex flex-col gap-6 backdrop-blur-md border border-white/30">
+      <h1 className="text-3xl font-bold text-center text-slate-900 mb-2">Register</h1>
       
       <Input
         label="Name"
@@ -95,9 +95,9 @@ export const RegisterForm: React.FC = () => {
         Register
       </Button>
 
-      <p className="auth-link">
+      <p className="text-center text-sm text-slate-900 opacity-80">
         Already have an account?{' '}
-        <a href="/login" className="text-primary">Login</a>
+        <a href="/" className="text-blue-500 font-semibold hover:underline">Login</a>
       </p>
     </form>
   );
