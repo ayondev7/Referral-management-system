@@ -5,9 +5,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { authAPI } from '@lib/api';
-import { useAuthStore } from '@store/authStore';
 import { Input } from '@components/ui/Input';
 import { Button } from '@components/ui/Button';
 
@@ -20,7 +19,6 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export const LoginForm: React.FC = () => {
   const router = useRouter();
-  const setAuth = useAuthStore((state) => state.setAuth);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -34,14 +32,25 @@ export const LoginForm: React.FC = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setLoading(true);
-      const response = await authAPI.login(data);
-      const { user, accessToken, refreshToken } = response.data;
       
-      setAuth(user, accessToken, refreshToken);
-      toast.success('Login successful!');
-      router.push('/dashboard');
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      if (result?.ok) {
+        toast.success('Login successful!');
+        router.push('/dashboard');
+        router.refresh();
+      }
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Login failed. Please check your credentials.';
+      const errorMessage = (error as Error)?.message || 'Login failed. Please check your credentials.';
       toast.error(errorMessage);
     } finally {
       setLoading(false);

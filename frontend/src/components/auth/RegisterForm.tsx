@@ -6,9 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { authAPI } from '@lib/api';
-import { useAuthStore } from '@store/authStore';
 import { Input } from '@components/ui/Input';
 import { Button } from '@components/ui/Button';
 
@@ -28,7 +28,6 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 export const RegisterForm: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const setAuth = useAuthStore((state) => state.setAuth);
   const [loading, setLoading] = useState(false);
 
   const referralCode = searchParams.get('ref') || '';
@@ -48,12 +47,27 @@ export const RegisterForm: React.FC = () => {
     try {
       setLoading(true);
       const { confirmPassword, ...registerData } = data;
-      const response = await authAPI.register(registerData);
-      const { user, accessToken, refreshToken } = response.data;
       
-      setAuth(user, accessToken, refreshToken);
-      toast.success('Registration successful! Welcome!');
-      router.push('/dashboard');
+      // Register the user
+      await authAPI.register(registerData);
+      
+      // Automatically sign in after registration
+      const result = await signIn('credentials', {
+        email: registerData.email,
+        password: registerData.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      if (result?.ok) {
+        toast.success('Registration successful! Welcome!');
+        router.push('/dashboard');
+        router.refresh();
+      }
     } catch (error: unknown) {
       const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Registration failed. Please try again.';
       toast.error(errorMessage);

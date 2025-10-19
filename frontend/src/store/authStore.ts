@@ -1,41 +1,14 @@
 import { create } from 'zustand';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  referralCode: string;
-  credits: number;
-}
+// This store is now minimal and only used for UI state
+// Authentication is handled by NextAuth
+// User data is fetched via React Query (useUser hook)
 
 interface AuthStore {
-  user: User | null;
-  accessToken: string | null;
-  refreshToken: string | null;
-  isAuthenticated: boolean;
-  setAuth: (user: User, accessToken: string, refreshToken: string) => void;
-  logout: () => void;
-  updateUser: (user: User) => void;
+  // Add any auth-related UI state here if needed
+  // Do NOT store tokens or user data here
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  accessToken: null,
-  refreshToken: null,
-  isAuthenticated: false,
-  setAuth: (user, accessToken, refreshToken) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-    }
-    set({ user, accessToken, refreshToken, isAuthenticated: true });
-  },
-  logout: () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-    }
-    set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
-  },
-  updateUser: (user) => set({ user }),
+  // Empty for now, can be used for auth-related UI state
 }));

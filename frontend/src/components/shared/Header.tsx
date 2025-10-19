@@ -3,26 +3,29 @@
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useAuthStore } from '@store/authStore';
+import { useSession, signOut } from 'next-auth/react';
+import { useUser } from '@/hooks/useUser';
 import { Button } from '@components/ui/Button';
-import { authAPI } from '@lib/api';
 import toast from 'react-hot-toast';
 
 export const Header: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { status } = useSession();
+  const { data: user, isLoading } = useUser();
   const [loggingOut, setLoggingOut] = useState(false);
+
+  const isAuthenticated = status === 'authenticated';
 
   const handleLogout = async () => {
     try {
       setLoggingOut(true);
-      await authAPI.logout();
-      logout();
+      await signOut({ redirect: false });
       toast.success('Logged out successfully');
       router.push('/');
+      router.refresh();
     } catch {
-      logout();
+      await signOut({ redirect: false });
       router.push('/');
     } finally {
       setLoggingOut(false);

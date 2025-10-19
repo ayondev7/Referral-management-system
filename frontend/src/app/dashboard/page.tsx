@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuthStore } from '@store/authStore';
+import { useSession } from 'next-auth/react';
 import { useDashboardStore } from '@store/dashboardStore';
 import { dashboardAPI, courseAPI } from '@lib/api';
 import { StatsCard } from '@components/dashboard/StatsCard';
@@ -23,15 +22,13 @@ interface Course {
 }
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
+  const { status } = useSession();
   const { dashboard, loading, setDashboard, setLoading } = useDashboardStore();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {     
-      router.push('/');
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -61,9 +58,9 @@ export default function DashboardPage() {
 
     fetchDashboard();
     fetchLatestCourses();
-  }, [isAuthenticated, router, setDashboard, setLoading]);
+  }, [status, setDashboard, setLoading]);
 
-  if (loading || !dashboard) {
+  if (status === 'loading' || loading || !dashboard) {
     return (
       <div className="min-h-[calc(100vh-140px)] flex items-center justify-center">
         <Loader size="lg" />

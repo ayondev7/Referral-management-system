@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 import { AUTH_ROUTES } from '@/routes/authRoutes';
 import { PURCHASE_ROUTES } from '@/routes/purchaseRoutes';
 import { REFERRAL_ROUTES } from '@/routes/referralRoutes';
@@ -12,12 +13,13 @@ export const api = axios.create({
   },
 });
 
+// Request interceptor to add token from NextAuth session
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      const session = await getSession();
+      if (session?.accessToken) {
+        config.headers.Authorization = `Bearer ${session.accessToken}`;
       }
     }
     return config;
@@ -25,36 +27,17 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (!refreshToken) {
-          throw new Error('No refresh token');
-        }
-
-        const { data } = await axios.post(AUTH_ROUTES.REFRESH, {
-          refreshToken,
-        });
-
-        localStorage.setItem('accessToken', data.accessToken);
-        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-        
-        return api(originalRequest);
-      } catch (refreshError) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+    if (error.response?.status === 401) {
+      // Token is invalid or expired, NextAuth will handle this
+      // Redirect to home page
+      if (typeof window !== 'undefined') {
         window.location.href = '/';
-        return Promise.reject(refreshError);
       }
     }
-
     return Promise.reject(error);
   }
 );
@@ -62,9 +45,6 @@ api.interceptors.response.use(
 export const authAPI = {
   register: (data: { name: string; email: string; password: string; referralCode?: string }) =>
     axios.post(AUTH_ROUTES.REGISTER, data),
-  login: (data: { email: string; password: string }) =>
-    axios.post(AUTH_ROUTES.LOGIN, data),
-  logout: () => axios.post(AUTH_ROUTES.LOGOUT),
 };
 
 export const purchaseAPI = {
