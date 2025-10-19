@@ -66,6 +66,16 @@ export const Navbar: React.FC = () => {
               >
                 Courses
               </Link>
+              <Link
+                href={CLIENT_ROUTES.MY_COURSES}
+                className={`text-sm font-medium transition-colors ${
+                  isActive(CLIENT_ROUTES.MY_COURSES)
+                    ? 'text-blue-600'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                My Courses
+              </Link>
             </nav>
           )}
         </div>

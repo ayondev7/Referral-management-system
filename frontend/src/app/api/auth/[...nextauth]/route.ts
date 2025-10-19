@@ -24,6 +24,7 @@ declare module 'next-auth' {
     user: BackendUser;
     accessToken: string;
     refreshToken: string;
+    error?: string;
   }
 
   interface User extends BackendUser {
@@ -37,6 +38,28 @@ declare module 'next-auth/jwt' {
     user: BackendUser;
     accessToken: string;
     refreshToken: string;
+    accessTokenExpiry: number;
+    error?: string;
+  }
+}
+
+async function refreshAccessToken(token: any) {
+  try {
+    const response = await axios.post(AUTH_ROUTES.REFRESH, {
+      refreshToken: token.refreshToken,
+    });
+
+    return {
+      ...token,
+      accessToken: response.data.accessToken,
+      accessTokenExpiry: Date.now() + 3 * 60 * 60 * 1000, // 3 hours from now
+    };
+  } catch (error) {
+    console.error('Error refreshing access token:', error);
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
   }
 }
 
@@ -80,7 +103,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 7 * 24 * 60 * 60, // 7 days (matches refresh token)
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -96,14 +119,28 @@ export const authOptions: NextAuthOptions = {
         };
         token.accessToken = authUser.accessToken;
         token.refreshToken = authUser.refreshToken;
+        token.accessTokenExpiry = Date.now() + 3 * 60 * 60 * 1000; // 3 hours from now
+        return token;
       }
 
-      // Check if access token needs refresh (you can add expiry check here)
-      // For now, we'll use the token as is
+      // Check if access token needs refresh
+      // Refresh if less than 30 minutes remaining
+      const shouldRefresh = (token.accessTokenExpiry as number) < Date.now() + 30 * 60 * 1000;
+      
+      if (shouldRefresh) {
+        console.log('Refreshing access token...');
+        return await refreshAccessToken(token);
+      }
       
       return token;
     },
     async session({ session, token }) {
+      // If there was an error refreshing the token, sign out the user
+      if (token.error === 'RefreshAccessTokenError') {
+        // This will trigger a sign out
+        return { ...session, error: 'RefreshAccessTokenError' } as any;
+      }
+
       session.user = token.user;
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;

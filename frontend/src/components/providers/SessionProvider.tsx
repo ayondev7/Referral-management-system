@@ -1,12 +1,27 @@
 'use client';
 
-import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react';
-import { ReactNode } from 'react';
+import { SessionProvider as NextAuthSessionProvider, useSession, signOut } from 'next-auth/react';
+import { ReactNode, useEffect } from 'react';
+
+function SessionErrorHandler({ children }: { children: ReactNode }) {
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    // Check if there's a refresh token error and sign out
+    if (session?.error === 'RefreshAccessTokenError') {
+      signOut({ callbackUrl: '/' });
+    }
+  }, [session]);
+
+  return <>{children}</>;
+}
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   return (
-    <NextAuthSessionProvider>
-      {children}
+    <NextAuthSessionProvider refetchInterval={5 * 60} refetchOnWindowFocus={true}>
+      <SessionErrorHandler>
+        {children}
+      </SessionErrorHandler>
     </NextAuthSessionProvider>
   );
 }

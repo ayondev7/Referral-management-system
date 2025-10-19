@@ -8,4 +8,5 @@ export const CLIENT_ROUTES = {
   DASHBOARD: "/dashboard",
   COURSES: "/courses",
   PURCHASE: "/purchase",
+  MY_COURSES: "/my-courses",
 } as const;

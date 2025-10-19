@@ -55,6 +55,8 @@ export const purchaseAPI = {
   pay: (purchaseId: string, data: { cardNumber: string; expiry: string; cvv: string; cardHolder: string }) =>
     api.post(PURCHASE_ROUTES.PAY(purchaseId), data),
   getAll: () => api.get(PURCHASE_ROUTES.GET_ALL),
+  getPurchasedCourses: (page?: number, limit?: number) =>
+    api.get(PURCHASE_ROUTES.GET_PURCHASED_COURSES, { params: { page, limit } }),
 };
 
 export const dashboardAPI = {
