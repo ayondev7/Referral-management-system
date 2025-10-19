@@ -30,8 +30,8 @@ export default function DashboardPage() {
   const [loadingCourses, setLoadingCourses] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
+    if (!isAuthenticated) {     
+      router.push('/');
       return;
     }
 
