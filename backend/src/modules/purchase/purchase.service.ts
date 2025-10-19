@@ -4,9 +4,10 @@ import { ReferralService } from '../referral/referral.service';
 const referralService = new ReferralService();
 
 export class PurchaseService {
-  async initiatePurchase(userId: string, courseName: string, amount: number) {
+  async initiatePurchase(userId: string, courseId: string, courseName: string, amount: number) {
     const purchase = await Purchase.create({
       userId,
+      courseId,
       courseName,
       amount,
       status: 'pending',

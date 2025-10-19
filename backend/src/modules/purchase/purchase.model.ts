@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IPurchase extends Document {
   userId: mongoose.Types.ObjectId;
+  courseId: mongoose.Types.ObjectId;
   courseName: string;
   amount: number;
   status: 'pending' | 'paid' | 'failed';
@@ -19,6 +20,12 @@ const purchaseSchema = new Schema<IPurchase>(
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
+      index: true
+    },
+    courseId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Course',
       required: true,
       index: true
     },

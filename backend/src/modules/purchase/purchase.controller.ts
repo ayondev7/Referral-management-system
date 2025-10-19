@@ -7,6 +7,7 @@ import { z } from 'zod';
 const purchaseService = new PurchaseService();
 
 const initiatePurchaseSchema = z.object({
+  courseId: z.string().min(1),
   courseName: z.string().min(1),
   amount: z.number().positive()
 });
@@ -21,17 +22,18 @@ const payPurchaseSchema = z.object({
 export const initiatePurchase = asyncHandler(async (req: AuthRequest, res: Response) => {
   const validation = initiatePurchaseSchema.safeParse(req.body);
   if (!validation.success) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Validation error',
-      errors: validation.error.errors,
+      errors: validation.error.issues,
       statusCode: 400
     });
+    return;
   }
 
   const userId = req.user!.id;
-  const { courseName, amount } = validation.data;
+  const { courseId, courseName, amount } = validation.data;
 
-  const purchase = await purchaseService.initiatePurchase(userId, courseName, amount);
+  const purchase = await purchaseService.initiatePurchase(userId, courseId, courseName, amount);
 
   res.status(201).json({
     purchaseId: purchase._id,
@@ -44,11 +46,12 @@ export const initiatePurchase = asyncHandler(async (req: AuthRequest, res: Respo
 export const payPurchase = asyncHandler(async (req: AuthRequest, res: Response) => {
   const validation = payPurchaseSchema.safeParse(req.body);
   if (!validation.success) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Validation error',
-      errors: validation.error.errors,
+      errors: validation.error.issues,
       statusCode: 400
     });
+    return;
   }
 
   const userId = req.user!.id;
