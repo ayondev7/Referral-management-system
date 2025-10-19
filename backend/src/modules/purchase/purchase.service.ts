@@ -108,4 +108,36 @@ export class PurchaseService {
     console.log(`Fetched ${purchases.length} purchases for user ${userId}`);
     return purchases;
   }
+
+  async getUserPurchasedCourses(userId: string, page: number, limit: number) {
+    const skip = (page - 1) * limit;
+
+    // Only get paid purchases
+    const query = { userId, status: 'paid' };
+
+    const [purchases, total] = await Promise.all([
+      Purchase.find(query)
+        .populate('courseId')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Purchase.countDocuments(query)
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    console.log(`Fetched ${purchases.length} purchased courses for user ${userId}, page ${page}`);
+
+    return {
+      purchases,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalItems: total,
+        itemsPerPage: limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      }
+    };
+  }
 }

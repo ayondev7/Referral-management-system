@@ -77,3 +77,13 @@ export const getPurchases = asyncHandler(async (req: AuthRequest, res: Response)
   const purchases = await purchaseService.getUserPurchases(userId);
   res.status(200).json(purchases);
 });
+
+export const getPurchasedCourses = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const userId = req.user!.id;
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 8;
+
+  const result = await purchaseService.getUserPurchasedCourses(userId, page, limit);
+
+  res.status(200).json(result);
+});
