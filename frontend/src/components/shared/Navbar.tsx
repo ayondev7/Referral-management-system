@@ -5,8 +5,8 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useUser } from '@/hooks/useUser';
+import Image from 'next/image';
 import { Button } from '@components/ui/Button';
-import toast from 'react-hot-toast';
 import { CLIENT_ROUTES } from '@/routes';
 
 export const Navbar: React.FC = () => {
@@ -23,7 +23,6 @@ export const Navbar: React.FC = () => {
       setLoggingOut(true);
       // Use NextAuth signOut with callbackUrl to ensure session cleared and redirect
       await signOut({ redirect: true, callbackUrl: CLIENT_ROUTES.HOME });
-      toast.success('Logged out successfully');
     } catch (err) {
       // Fallback: try non-redirecting signOut and client-side push
       try {
@@ -74,9 +73,20 @@ export const Navbar: React.FC = () => {
         
         {isAuthenticated && user && (
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-900 hidden md:block">
-              Welcome, {user.name}
-            </span>
+            {/* Avatar (uses GitHub avatar based on user name; fallback to octocat) */}
+            <div className="flex items-center gap-3">
+              <Image
+                src={'https://cdn-icons-png.freepik.com/512/3607/3607444.png'}
+                alt={user.name || 'User avatar'}
+                width={36}
+                height={36}
+                className="rounded-full"
+              />
+              <span className="text-sm text-slate-900 font-medium">
+                {user.name}
+              </span>
+            </div>
+
             <span className="text-sm font-semibold text-blue-500 bg-blue-50 px-3 py-1.5 rounded-lg">
               Credits: {user.credits}
             </span>

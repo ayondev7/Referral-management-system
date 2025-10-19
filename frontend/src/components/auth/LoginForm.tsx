@@ -46,7 +46,7 @@ export const LoginForm: React.FC = () => {
       }
 
       if (result?.ok) {
-        toast.success('Login successful!');
+        toast.success('Welcome!');
         router.push(CLIENT_ROUTES.DASHBOARD);
         router.refresh();
       }
