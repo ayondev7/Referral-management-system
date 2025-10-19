@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@store/authStore';
 import { Button } from '@components/ui/Button';
@@ -10,16 +10,20 @@ import toast from 'react-hot-toast';
 export const Header: React.FC = () => {
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuthStore();
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     try {
+      setLoggingOut(true);
       await authAPI.logout();
       logout();
       toast.success('Logged out successfully');
       router.push('/');
-    } catch (error) {
+    } catch {
       logout();
       router.push('/');
+    } finally {
+      setLoggingOut(false);
     }
   };
 
@@ -36,7 +40,7 @@ export const Header: React.FC = () => {
             <span className="text-sm font-semibold text-blue-500 bg-blue-50 px-3 py-1.5 rounded-lg">
               Credits: {user.credits}
             </span>
-            <Button onClick={handleLogout} variant="outline" size="sm">
+            <Button onClick={handleLogout} variant="outline" size="sm" loading={loggingOut}>
               Logout
             </Button>
           </div>

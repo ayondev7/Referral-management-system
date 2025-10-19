@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader } from 'react-icons/lu';
+import { LuLoader } from 'react-icons/lu';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'danger';
@@ -42,7 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {loading ? (
         <>
-          <Loader className="w-4 h-4 animate-spin mr-2" />
+          <LuLoader className="w-4 h-4 animate-spin mr-2" />
           Loading...
         </>
       ) : (

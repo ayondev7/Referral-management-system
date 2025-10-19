@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 
 export function useFetch<T>(
   fetcher: () => Promise<{ data: T }>,
-  deps: any[] = []
+  deps: React.DependencyList = []
 ) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ export function useFetch<T>(
     return () => {
       mounted = false;
     };
-  }, deps);
+  }, [fetcher, ...deps]);
 
   return { data, loading, error };
 }

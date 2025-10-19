@@ -19,7 +19,7 @@ export const ReferralCard: React.FC<ReferralCardProps> = ({ referralLink }) => {
       setCopied(true);
       toast.success('Referral link copied!');
       setTimeout(() => setCopied(false), 2000);
-    } catch (error) {
+    } catch {
       toast.error('Failed to copy link');
     }
   };

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { authAPI } from '@lib/api';
 import { useAuthStore } from '@store/authStore';
@@ -53,8 +54,8 @@ export const RegisterForm: React.FC = () => {
       setAuth(user, accessToken, refreshToken);
       toast.success('Registration successful! Welcome!');
       router.push('/dashboard');
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+    } catch (error: unknown) {
+      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Registration failed. Please try again.';
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -111,7 +112,7 @@ export const RegisterForm: React.FC = () => {
 
       <p className="text-center text-sm text-slate-900 opacity-80">
         Already have an account?{' '}
-        <a href="/" className="text-blue-500 font-semibold hover:underline">Login</a>
+        <Link href="/" className="text-blue-500 font-semibold hover:underline">Login</Link>
       </p>
     </form>
   );

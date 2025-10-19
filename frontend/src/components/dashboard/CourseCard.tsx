@@ -52,8 +52,8 @@ export const CourseCard: React.FC = () => {
       setPurchaseId(response.data.purchaseId);
       setShowPaymentForm(true);
       toast.success('Course selected! Please complete payment.');
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to initiate purchase');
+    } catch (error: unknown) {
+      toast.error((error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to initiate purchase');
     } finally {
       setLoading(false);
     }
@@ -70,8 +70,8 @@ export const CourseCard: React.FC = () => {
       setPurchaseId(null);
       setSelectedCourse(null);
       reset();
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Payment failed');
+    } catch (error: unknown) {
+      toast.error((error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Payment failed');
     } finally {
       setLoading(false);
     }

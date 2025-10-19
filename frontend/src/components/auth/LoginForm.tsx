@@ -40,8 +40,8 @@ export const LoginForm: React.FC = () => {
       setAuth(user, accessToken, refreshToken);
       toast.success('Login successful!');
       router.push('/dashboard');
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Login failed. Please check your credentials.';
+    } catch (error: unknown) {
+      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Login failed. Please check your credentials.';
       toast.error(errorMessage);
     } finally {
       setLoading(false);

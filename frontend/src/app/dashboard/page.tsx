@@ -12,7 +12,7 @@ import { Loader } from '@components/ui/Loader';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const { dashboard, loading, setDashboard, setLoading } = useDashboardStore();
 
   useEffect(() => {
