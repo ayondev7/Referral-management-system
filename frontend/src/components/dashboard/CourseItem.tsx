@@ -76,7 +76,7 @@ export const CourseItem: React.FC<CourseItemProps> = ({ course, index = 0 }) => 
                 ${course.price}
               </span>
             </div>
-            <Link href={`/courses/${course._id}/purchase`}>
+            <Link href={`/courses/${course._id}/purchase?checkout=true`}>
               <Button size="sm" className="shadow-sm">
                 Buy Now
               </Button>

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useAuthStore } from '@store/authStore';
 import { courseAPI, purchaseAPI } from '@lib/api';
@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
+import { infoToast } from '@lib/toast';
 import { motion } from 'framer-motion';
 
 interface Course {
@@ -39,6 +40,8 @@ export default function CoursePurchasePage() {
   const params = useParams();
   const courseId = params.id as string;
   const { isAuthenticated } = useAuthStore();
+  const searchParams = useSearchParams();
+  const autoInitiatedRef = useRef(false);
   
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,7 +68,30 @@ export default function CoursePurchasePage() {
       try {
         setLoading(true);
         const response = await courseAPI.getById(courseId);
-        setCourse(response.data.data);
+        const courseData = response.data.data;
+        setCourse(courseData);
+
+        // If the URL includes ?checkout=true, auto-initiate the purchase and show the payment form
+        const checkout = searchParams?.get('checkout') === 'true';
+        if (checkout && courseData && !autoInitiatedRef.current) {
+          autoInitiatedRef.current = true;
+          try {
+            setProcessing(true);
+            const resp = await purchaseAPI.initiate({
+              courseId: courseData._id,
+              courseName: courseData.title,
+              amount: courseData.price,
+            });
+            setPurchaseId(resp.data.purchaseId);
+            setShowPaymentForm(true);
+            infoToast('Please complete your payment details');
+          } catch (err) {
+            console.error('Auto-initiate purchase failed', err);
+            toast.error('Failed to start checkout automatically');
+          } finally {
+            setProcessing(false);
+          }
+        }
       } catch (error) {
         console.error('Failed to fetch course', error);
         toast.error('Course not found');
@@ -76,7 +102,7 @@ export default function CoursePurchasePage() {
     };
 
     fetchCourse();
-  }, [courseId, isAuthenticated, router]);
+  }, [courseId, isAuthenticated, router, searchParams]);
 
   const handleInitiatePurchase = async () => {
     if (!course) return;
@@ -88,9 +114,9 @@ export default function CoursePurchasePage() {
         courseName: course.title,
         amount: course.price,
       });
-      setPurchaseId(response.data.purchaseId);
-      setShowPaymentForm(true);
-      toast.success('Please complete your payment details');
+  setPurchaseId(response.data.purchaseId);
+  setShowPaymentForm(true);
+  infoToast('Please complete your payment details');
     } catch (error: unknown) {
       toast.error(
         (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||

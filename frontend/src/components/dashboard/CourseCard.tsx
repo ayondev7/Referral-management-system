@@ -12,9 +12,9 @@ import { Button } from '@components/ui/Button';
 import { Input } from '@components/ui/Input';
 
 const courses = [
-  { name: 'Web Development Masterclass', price: 99 },
-  { name: 'Advanced React & Next.js', price: 149 },
-  { name: 'Full Stack JavaScript', price: 199 },
+  { id: 'demo-1', name: 'Web Development Masterclass', price: 99 },
+  { id: 'demo-2', name: 'Advanced React & Next.js', price: 149 },
+  { id: 'demo-3', name: 'Full Stack JavaScript', price: 199 },
 ];
 
 const purchaseSchema = z.object({
@@ -46,6 +46,7 @@ export const CourseCard: React.FC = () => {
       setLoading(true);
       setSelectedCourse(course);
       const response = await purchaseAPI.initiate({
+        courseId: (course as any).id || '',
         courseName: course.name,
         amount: course.price,
       });
