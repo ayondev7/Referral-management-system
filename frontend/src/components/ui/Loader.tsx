@@ -1,4 +1,5 @@
 import React from 'react';
+import { LuLoader} from 'react-icons/lu';
 
 interface LoaderProps {
   size?: 'sm' | 'md' | 'lg';
@@ -6,15 +7,17 @@ interface LoaderProps {
 }
 
 export const Loader: React.FC<LoaderProps> = ({ size = 'md', className = '' }) => {
-  const sizeClasses = {
-    sm: 'w-6 h-6',
-    md: 'w-10 h-10',
-    lg: 'w-16 h-16',
-  };
-  
+  const iconSizes = {
+    sm: 18,
+    md: 36,
+    lg: 48,
+  } as const;
+
+  const iconSize = iconSizes[size] ?? iconSizes.md;
+
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <div className={`${sizeClasses[size]} border-3 border-blue-200 border-t-blue-500 rounded-full animate-spin`}></div>
+      <LuLoader size={iconSize} className="animate-spin text-blue-500" />
     </div>
   );
 };
