@@ -5,30 +5,24 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
   BarElement,
   ArcElement,
   Title,
   Tooltip,
   Legend,
-  Filler,
 } from 'chart.js';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { TabOption } from '@/components/ui/Tabs';
 import { ReferralChartData } from '@/types';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
   BarElement,
   ArcElement,
   Title,
   Tooltip,
-  Legend,
-  Filler
+  Legend
 );
 
 interface ReferralChartsProps {
@@ -82,28 +76,6 @@ export default function ReferralCharts({ data, timeRange }: ReferralChartsProps)
     },
   };
 
-  const timeSeriesData = {
-    labels: data.labels,
-    datasets: [
-      {
-        label: 'Converted',
-        data: data.convertedData,
-        borderColor: 'rgb(34, 197, 94)',
-        backgroundColor: 'rgba(34, 197, 94, 0.1)',
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: 'Pending',
-        data: data.pendingData,
-        borderColor: 'rgb(234, 179, 8)',
-        backgroundColor: 'rgba(234, 179, 8, 0.1)',
-        fill: true,
-        tension: 0.4,
-      },
-    ],
-  };
-
   const barData = {
     labels: data.labels,
     datasets: [
@@ -124,13 +96,9 @@ export default function ReferralCharts({ data, timeRange }: ReferralChartsProps)
     ],
   };
 
-  const timeSeriesOptions = {
+  const barOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    interaction: {
-      mode: 'index' as const,
-      intersect: false,
-    },
     plugins: {
       legend: {
         position: 'top' as const,
@@ -170,16 +138,6 @@ export default function ReferralCharts({ data, timeRange }: ReferralChartsProps)
     },
   };
 
-  const getChartComponent = () => {
-    if (timeRange === 'daily') {
-      return <Line data={timeSeriesData} options={timeSeriesOptions} />;
-    } else if (timeRange === 'monthly') {
-      return <Bar data={barData} options={timeSeriesOptions} />;
-    } else {
-      return <Bar data={barData} options={timeSeriesOptions} />;
-    }
-  };
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
@@ -196,7 +154,7 @@ export default function ReferralCharts({ data, timeRange }: ReferralChartsProps)
           Referrals Over Time
         </h3>
         <div className="h-64">
-          {getChartComponent()}
+          <Bar data={barData} options={barOptions} />
         </div>
       </div>
     </div>
