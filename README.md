@@ -1,4 +1,4 @@
-# Referral Management System
+# Referral & Credit Management System
 
 A full-stack web application to manage online course purchases with a referral and credit system. Users can refer friends, earn credits, and use them for future course purchases.
 
