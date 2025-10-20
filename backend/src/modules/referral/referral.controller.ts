@@ -24,3 +24,10 @@ export const getReferralStats = asyncHandler(async (req: AuthRequest, res: Respo
   const stats = await referralService.getReferralStats(userId);
   res.status(200).json(stats);
 });
+
+export const getReferralAnalytics = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const userId = req.user!.id;
+  const timeRange = (req.query.timeRange as 'daily' | 'monthly' | 'yearly') || 'monthly';
+  const analytics = await referralService.getReferralAnalytics(userId, timeRange);
+  res.status(200).json(analytics);
+});
