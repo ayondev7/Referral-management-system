@@ -13,7 +13,7 @@ export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps)
       <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
         <div className="bg-green-100 rounded-full p-1.5 sm:p-2">
           <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-green-600"
+            className="w-4 h-4 text-green-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -26,9 +26,9 @@ export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps)
             />
           </svg>
         </div>
-        <div>
-          <p className="text-xs text-slate-600">Converted</p>
-          <p className="text-base sm:text-lg font-bold text-slate-900">
+        <div className='flex gap-x-2.5'>
+          <p className="text-sm text-slate-600">Converted - </p>
+          <p className="text-sm text-slate-600 font-semibold">
             {referrals.filter((r: Referral) => r.status === 'converted').length}
           </p>
         </div>
@@ -39,7 +39,7 @@ export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps)
       <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
         <div className="bg-yellow-100 rounded-full p-1.5 sm:p-2">
           <svg
-            className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600"
+            className="w-4 h-4 text-yellow-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -53,8 +53,8 @@ export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps)
           </svg>
         </div>
         <div>
-          <p className="text-xs text-slate-600">Pending</p>
-          <p className="text-base sm:text-lg font-bold text-slate-900">
+          <p className="text-sm text-slate-600">Pending - </p>
+          <p className="text-sm text-slate-600 font-semibold">
             {referrals.filter((r: Referral) => r.status === 'pending').length}
           </p>
         </div>

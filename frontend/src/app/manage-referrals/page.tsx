@@ -87,29 +87,33 @@ export default function ManageReferralsPage() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col gap-4 sm:gap-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
-                Manage Referrals
-              </h1>
-              <p className="text-sm sm:text-base text-slate-600">
-                {totalReferrals > 0
-                  ? `You have referred ${totalReferrals} ${totalReferrals === 1 ? 'user' : 'users'}`
-                  : 'Start earning credits by referring friends'}
-              </p>
-            </div>
-            
-            <div className="flex flex-col xl:flex-row items-stretch xl:items-end gap-4 xl:gap-6">
-              <div className="flex-1 w-full">
-                {referralLink && <ReferralCard referralLink={referralLink} />}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
+                  Manage Referrals
+                </h1>
+                <p className="text-sm sm:text-base text-slate-600">
+                  {totalReferrals > 0
+                    ? `You have referred ${totalReferrals} ${totalReferrals === 1 ? 'user' : 'users'}`
+                    : 'Start earning credits by referring friends'}
+                </p>
               </div>
-              
-              <div className="flex flex-col sm:flex-row xl:flex-col 2xl:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-                <div className="flex-1 sm:flex-initial">
-                  <ReferralStatsCard referrals={referrals} />
-                </div>
-                <div className="flex-1 sm:flex-initial">
-                  <Tabs tabs={TABS} activeTab={timeRange} onTabChange={setTimeRange} />
-                </div>
+
+              <div className="flex-shrink-0 w-full sm:w-auto">
+                {referralLink && (
+                  <div className="sm:ml-6">
+                    <ReferralCard referralLink={referralLink} />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+              <div className="flex-1 sm:flex-initial">
+                <ReferralStatsCard referrals={referrals} />
+              </div>
+              <div className="flex-1 sm:flex-initial">
+                <Tabs tabs={TABS} activeTab={timeRange} onTabChange={setTimeRange} />
               </div>
             </div>
           </div>
