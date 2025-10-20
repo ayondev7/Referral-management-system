@@ -1,5 +1,6 @@
-import { useMutation, useQuery } from '@/hooks';
-import { purchaseAPI } from '@/lib/api';
+import { useMutation, useQuery, apiRequest } from '@/hooks';
+import { PURCHASE_ROUTES } from '@/routes/purchaseRoutes';
+import { PurchasedCoursesResponse } from '@/types';
 
 interface InitiatePurchaseParams {
   courseId: string;
@@ -19,53 +20,14 @@ interface PayPurchaseParams {
   cardHolder: string;
 }
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  author: string;
-  price: number;
-  imageUrl: string;
-  category?: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface PurchasedCourse {
-  _id: string;
-  userId: string;
-  courseId: Course;
-  courseName: string;
-  amount: number;
-  status: 'pending' | 'paid' | 'failed';
-  isFirstPurchase: boolean;
-  paymentInfo?: {
-    cardHolder: string;
-    last4: string;
-    paidAt: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface PurchasedCoursesResponse {
-  purchases: PurchasedCourse[];
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    itemsPerPage: number;
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-  };
-}
-
 export function useInitiatePurchase() {
   return useMutation<InitiatePurchaseResponse, Error, InitiatePurchaseParams>({
     mutationFn: async (params) => {
-      const response = await purchaseAPI.initiate(params);
-      return response.data;
+      return await apiRequest<InitiatePurchaseResponse>({
+        method: 'POST',
+        url: PURCHASE_ROUTES.INITIATE,
+        data: params,
+      });
     },
   });
 }
@@ -73,11 +35,15 @@ export function useInitiatePurchase() {
 export function usePayPurchase() {
   return useMutation<void, Error, PayPurchaseParams>({
     mutationFn: async (params) => {
-      await purchaseAPI.pay(params.purchaseId, {
-        cardNumber: params.cardNumber,
-        expiry: params.expiry,
-        cvv: params.cvv,
-        cardHolder: params.cardHolder,
+      await apiRequest<void>({
+        method: 'POST',
+        url: PURCHASE_ROUTES.PAY(params.purchaseId),
+        data: {
+          cardNumber: params.cardNumber,
+          expiry: params.expiry,
+          cvv: params.cvv,
+          cardHolder: params.cardHolder,
+        },
       });
     },
   });
@@ -87,8 +53,12 @@ export function usePurchasedCourses(page: number = 1, limit: number = 8) {
   return useQuery<PurchasedCoursesResponse, Error>({
     queryKey: ['purchasedCourses', page, limit],
     queryFn: async () => {
-      const response = await purchaseAPI.getPurchasedCourses(page, limit);
-      return response.data;
+      return await apiRequest<PurchasedCoursesResponse>({
+        method: 'GET',
+        url: PURCHASE_ROUTES.GET_PURCHASED_COURSES,
+        params: { page, limit },
+      });
     },
+    staleTime: 2 * 60 * 1000,
   });
 }

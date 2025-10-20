@@ -1,67 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { useDashboardStore } from '@store/dashboardStore';
-import { dashboardAPI, courseAPI } from '@lib/api';
+import { useDashboard, useLatestCourses } from '@/hooks';
 import { StatsCard } from '@components/dashboard/StatsCard';
 import { ReferralCard } from '@components/dashboard/ReferralCard';
-import { CourseItem } from '@components/dashboard/CourseItem';
+import { CourseCard } from '@/components/dashboard/CourseCard';
 import { Loader } from '@components/ui/Loader';
 import { Button } from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  author: string;
-  price: number;
-  imageUrl: string;
-  category?: string;
-}
-
 export default function DashboardPage() {
   const { status } = useSession();
-  const { dashboard, loading, setDashboard, setLoading } = useDashboardStore();
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loadingCourses, setLoadingCourses] = useState(false);
+  const { data: dashboard, isLoading: dashboardLoading } = useDashboard();
+  const { data: courses = [], isLoading: coursesLoading } = useLatestCourses(6);
 
-  useEffect(() => {
-    if (status !== 'authenticated') {
-      return;
-    }
-
-    const fetchDashboard = async () => {
-      try {
-        setLoading(true);
-        const response = await dashboardAPI.get();
-        setDashboard(response.data);
-      } catch (error) {
-        console.error('Failed to fetch dashboard', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchLatestCourses = async () => {
-      try {
-        setLoadingCourses(true);
-        const response = await courseAPI.getLatest(6);
-        setCourses(response.data.data);
-      } catch (error) {
-        console.error('Failed to fetch courses', error);
-      } finally {
-        setLoadingCourses(false);
-      }
-    };
-
-    fetchDashboard();
-    fetchLatestCourses();
-  }, [status, setDashboard, setLoading]);
-
-  if (status === 'loading' || loading || !dashboard) {
+  if (status === 'loading' || dashboardLoading || !dashboard) {
     return (
       <div className="min-h-[calc(100vh-140px)] flex items-center justify-center">
         <Loader size="lg" />
@@ -99,25 +54,24 @@ export default function DashboardPage() {
 
         <ReferralCard referralLink={dashboard.referralLink} />
 
-        {/* Latest Courses Section */}
         <div className="mt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-slate-900">Latest Courses</h2>
-              <Link href={CLIENT_ROUTES.COURSES}>
+            <Link href={CLIENT_ROUTES.COURSES}>
               <Button variant="outline" size="sm">
                 View All Courses
               </Button>
             </Link>
           </div>
 
-          {loadingCourses ? (
+          {coursesLoading ? (
             <div className="flex items-center justify-center py-12">
               <Loader size="md" />
             </div>
           ) : courses.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {courses.map((course, index) => (
-                <CourseItem key={course._id} course={course} index={index} />
+                <CourseCard key={course._id} course={course} index={index} />
               ))}
             </div>
           ) : (

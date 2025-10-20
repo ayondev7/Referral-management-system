@@ -1,35 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  author: string;
-  price: number;
-  imageUrl: string;
-  category?: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface PurchasedCourse {
-  _id: string;
-  userId: string;
-  courseId: Course;
-  courseName: string;
-  amount: number;
-  status: 'pending' | 'paid' | 'failed';
-  isFirstPurchase: boolean;
-  paymentInfo?: {
-    cardHolder: string;
-    last4: string;
-    paidAt: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
+import { PurchasedCourse } from '@/types';
 
 interface PurchasedCoursesTableProps {
   purchases: PurchasedCourse[];

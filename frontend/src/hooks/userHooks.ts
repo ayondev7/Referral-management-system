@@ -1,15 +1,7 @@
-import { useQuery } from '@/hooks';
+import { useQuery, apiRequest } from '@/hooks';
 import { useSession } from 'next-auth/react';
-import axios from 'axios';
 import { AUTH_ROUTES } from '@/routes/authRoutes';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  referralCode: string;
-  credits: number;
-}
+import { User } from '@/types';
 
 export function useUser() {
   const { data: session, status } = useSession();
@@ -21,16 +13,16 @@ export function useUser() {
         throw new Error('No access token available');
       }
 
-      const response = await axios.get(AUTH_ROUTES.ME, {
+      return await apiRequest<User>({
+        method: 'GET',
+        url: AUTH_ROUTES.ME,
         headers: {
           Authorization: `Bearer ${session.accessToken}`,
         },
       });
-
-      return response.data;
     },
     enabled: status === 'authenticated' && !!session?.accessToken,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
     retry: false,
   });
 }

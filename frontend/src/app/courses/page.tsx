@@ -5,46 +5,28 @@ import { useRouter } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';
 import { useAuthStore } from '@store/authStore';
 import { useSession } from 'next-auth/react';
-import { courseAPI } from '@lib/api';
+import { useCourses } from '@/hooks';
 import { CourseCard } from '@components/dashboard/CourseCard';
 import { Loader } from '@components/ui/Loader';
 import { Pagination } from '@components/ui/Pagination';
-
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  author: string;
-  price: number;
-  imageUrl: string;
-  category?: string;
-}
-
-interface PaginationData {
-  currentPage: number;
-  totalPages: number;
-  totalCourses: number;
-  limit: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
 
 export default function CoursesPage() {
   const router = useRouter();
   const { isAuthenticated: storeAuth } = useAuthStore() as any;
   const { data: session, status } = useSession();
   const isAuthenticated = status === 'authenticated' || !!storeAuth || !!(session as any)?.accessToken;
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [pagination, setPagination] = useState<PaginationData>({
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, isLoading } = useCourses(currentPage, 9);
+  const courses = data?.courses || [];
+  const pagination = data?.pagination || {
     currentPage: 1,
     totalPages: 1,
     totalCourses: 0,
     limit: 9,
     hasNextPage: false,
     hasPreviousPage: false,
-  });
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  };
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -52,28 +34,6 @@ export default function CoursesPage() {
       return;
     }
   }, [isAuthenticated, router]);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        setLoading(true);
-        const response = await courseAPI.getAll({
-          page: currentPage,
-          limit: 9,
-        });
-        setCourses(response.data.data.courses);
-        setPagination(response.data.data.pagination);
-      } catch (error) {
-        console.error('Failed to fetch courses', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isAuthenticated) {
-      fetchCourses();
-    }
-  }, [currentPage, isAuthenticated]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -94,7 +54,7 @@ export default function CoursesPage() {
           </p>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <Loader size="lg" />
           </div>
