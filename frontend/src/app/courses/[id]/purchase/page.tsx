@@ -37,13 +37,11 @@ export default function CoursePurchasePage() {
   const [purchaseId, setPurchaseId] = useState<string | null>(null);
 
   useEffect(() => {
-    // If the store says user is not authenticated, redirect to home per requirement
     if (!isAuthenticated) {
       router.push(CLIENT_ROUTES.HOME);
       return;
     }
 
-    // Auto-initiate the purchase after fetching the course
     if (course && !autoInitiatedRef.current) {
       autoInitiatedRef.current = true;
       initiatePurchaseMutation.mutate(
@@ -88,7 +86,6 @@ export default function CoursePurchasePage() {
           <Card>
             <div className="p-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20">
-                {/* Left Column: Course Details */}
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-4">{course.title}</h2>
                   <div className="mb-4">
@@ -110,7 +107,6 @@ export default function CoursePurchasePage() {
                   )}
                 </div>
 
-                {/* Right Column: Payment Form */}
                 <div>
                   <PaymentForm
                     course={{ id: course._id, name: course.title, price: course.price }}

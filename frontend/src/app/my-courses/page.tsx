@@ -14,7 +14,6 @@ export default function MyCoursesPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top when page changes
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -68,7 +67,6 @@ export default function MyCoursesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
@@ -82,7 +80,6 @@ export default function MyCoursesPage() {
               </p>
             </div>
             
-            {/* View Toggle Buttons */}
             <div className="flex items-center gap-2 bg-white rounded-lg shadow-sm border border-slate-200 p-1">
               <button className="flex items-center justify-center h-9 px-4 rounded-md bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium transition-all">
                 <svg
@@ -119,7 +116,6 @@ export default function MyCoursesPage() {
             </div>
           </div>
 
-          {/* Stats Cards */}
           {totalPurchases > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
               <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
@@ -201,10 +197,8 @@ export default function MyCoursesPage() {
           )}
         </div>
 
-        {/* Table Section */}
         <PurchasedCoursesTable purchases={purchases} />
 
-        {/* Pagination Section */}
         {pagination && pagination.totalPages > 1 && (
           <div className="mt-8">
             <Pagination

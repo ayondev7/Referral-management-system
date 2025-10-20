@@ -49,10 +49,8 @@ export const RegisterForm: React.FC = () => {
       setLoading(true);
       const { confirmPassword, ...registerData } = data;
       
-      // Register the user
       await authAPI.register(registerData);
       
-      // Automatically sign in after registration
       const result = await signIn('credentials', {
         email: registerData.email,
         password: registerData.password,

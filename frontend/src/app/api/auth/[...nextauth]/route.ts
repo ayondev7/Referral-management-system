@@ -93,7 +93,6 @@ export const authOptions: NextAuthOptions = {
             refreshToken,
           } as NextAuthUser;
         } catch (err) {
-          // Prefer backend-provided message, fall back to response status text or a generic message
           const errorObj = err as { response?: { data?: { message?: string }; statusText?: string } };
           const message = errorObj.response?.data?.message || errorObj.response?.statusText || 'Login failed';
           throw new Error(message);
@@ -103,11 +102,10 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 7 * 24 * 60 * 60, // 7 days (matches refresh token)
+    maxAge: 7 * 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
-      // Initial sign in
       if (user) {
         const authUser = user as AuthUser;
         token.user = {
@@ -119,12 +117,10 @@ export const authOptions: NextAuthOptions = {
         };
         token.accessToken = authUser.accessToken;
         token.refreshToken = authUser.refreshToken;
-        token.accessTokenExpiry = Date.now() + 3 * 60 * 60 * 1000; // 3 hours from now
+        token.accessTokenExpiry = Date.now() + 3 * 60 * 60 * 1000;
         return token;
       }
 
-      // Check if access token needs refresh
-      // Refresh if less than 30 minutes remaining
       const shouldRefresh = (token.accessTokenExpiry as number) < Date.now() + 30 * 60 * 1000;
       
       if (shouldRefresh) {
@@ -135,9 +131,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      // If there was an error refreshing the token, sign out the user
       if (token.error === 'RefreshAccessTokenError') {
-        // This will trigger a sign out
         return { ...session, error: 'RefreshAccessTokenError' } as any;
       }
 

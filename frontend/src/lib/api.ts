@@ -15,7 +15,6 @@ export const api = axios.create({
   },
 });
 
-// Request interceptor to add token from NextAuth session
 api.interceptors.request.use(
   async (config) => {
     if (typeof window !== 'undefined') {
@@ -29,13 +28,10 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      // Token is invalid or expired, NextAuth will handle this
-      // Redirect to home page
       if (typeof window !== 'undefined') {
         window.location.href = CLIENT_ROUTES.HOME;
       }

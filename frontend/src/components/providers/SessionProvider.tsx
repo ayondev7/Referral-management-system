@@ -7,7 +7,6 @@ function SessionErrorHandler({ children }: { children: ReactNode }) {
   const { data: session } = useSession();
 
   useEffect(() => {
-    // Check if there's a refresh token error and sign out
     if (session?.error === 'RefreshAccessTokenError') {
       signOut({ callbackUrl: '/' });
     }

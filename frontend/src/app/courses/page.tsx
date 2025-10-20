@@ -77,7 +77,6 @@ export default function CoursesPage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top of page
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -88,7 +87,6 @@ export default function CoursesPage() {
   return (
     <div className="min-h-[calc(100vh-140px)] p-8 bg-slate-50">
       <div className="max-w-screen-xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-slate-900 mb-2">All Courses</h1>
           <p className="text-base text-slate-900 opacity-70">
@@ -96,7 +94,6 @@ export default function CoursesPage() {
           </p>
         </div>
 
-        {/* Courses Grid */}
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader size="lg" />
@@ -105,11 +102,10 @@ export default function CoursesPage() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {courses.map((course, index) => (
-                <CourseItem key={course._id} course={course} index={index} />
+                <CourseCard key={course._id} course={course} index={index} />
               ))}
             </div>
 
-            {/* Pagination */}
             <Pagination
               currentPage={pagination.currentPage}
               totalPages={pagination.totalPages}

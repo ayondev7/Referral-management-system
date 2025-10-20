@@ -20,10 +20,8 @@ export const Navbar: React.FC = () => {
   const handleLogout = async () => {
     try {
       setLoggingOut(true);
-      // Use NextAuth signOut with callbackUrl to ensure session cleared and redirect
       await signOut({ redirect: true, callbackUrl: CLIENT_ROUTES.HOME });
     } catch (err) {
-      // Fallback: try non-redirecting signOut and client-side push
       try {
         await signOut({ redirect: false });
       } finally {
@@ -82,7 +80,6 @@ export const Navbar: React.FC = () => {
         
         {isAuthenticated && user && (
           <div className="flex items-center gap-4">
-            {/* Avatar (uses GitHub avatar based on user name; fallback to octocat) */}
             <div className="flex items-center gap-3">
               <Image
                 src={'https://cdn-icons-png.freepik.com/512/3607/3607444.png'}

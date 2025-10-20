@@ -152,7 +152,6 @@ export const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ pu
                 key={purchase._id}
                 className="hover:bg-slate-50 transition-colors duration-150"
               >
-                {/* Course Column */}
                 <td className="py-4 px-6">
                   <div className="flex items-center gap-3">
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
@@ -201,26 +200,22 @@ export const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ pu
                   </div>
                 </td>
 
-                {/* Category Column */}
                 <td className="py-4 px-6">
                   {getLevelBadge(purchase.courseId?.category)}
                 </td>
 
-                {/* Instructor Column */}
                 <td className="py-4 px-6">
                   <p className="text-sm text-slate-700 font-medium">
                     {purchase.courseId?.author || 'N/A'}
                   </p>
                 </td>
 
-                {/* Price Column */}
                 <td className="py-4 px-6">
                   <p className="text-sm font-semibold text-slate-900">
                     ${purchase.amount.toFixed(2)}
                   </p>
                 </td>
 
-                {/* Purchased On Column */}
                 <td className="py-4 px-6">
                   <div className="flex flex-col">
                     <p className="text-sm text-slate-700">
@@ -232,7 +227,6 @@ export const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ pu
                   </div>
                 </td>
 
-                {/* Status Column */}
                 <td className="py-4 px-6">
                   {getStatusBadge(purchase.status)}
                 </td>

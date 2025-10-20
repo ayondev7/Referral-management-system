@@ -18,19 +18,16 @@ export const Pagination: React.FC<PaginationProps> = ({
     const showEllipsisThreshold = 7;
 
     if (totalPages <= showEllipsisThreshold) {
-      // Show all pages if total is small
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Always show first page
       pages.push(1);
 
       if (currentPage > 3) {
         pages.push('...');
       }
 
-      // Show pages around current page
       const startPage = Math.max(2, currentPage - 1);
       const endPage = Math.min(totalPages - 1, currentPage + 1);
 
@@ -42,7 +39,6 @@ export const Pagination: React.FC<PaginationProps> = ({
         pages.push('...');
       }
 
-      // Always show last page
       pages.push(totalPages);
     }
 
@@ -76,7 +72,6 @@ export const Pagination: React.FC<PaginationProps> = ({
       className={`flex items-center justify-center gap-1 ${className}`}
       aria-label="Pagination"
     >
-      {/* Previous Button */}
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
@@ -109,7 +104,6 @@ export const Pagination: React.FC<PaginationProps> = ({
         Previous
       </button>
 
-      {/* Page Numbers */}
       <div className="flex items-center gap-1">
         {getPageNumbers().map((page, index) => {
           if (page === '...') {
@@ -150,7 +144,6 @@ export const Pagination: React.FC<PaginationProps> = ({
         })}
       </div>
 
-      {/* Next Button */}
       <button
         onClick={handleNext}
         disabled={currentPage === totalPages}
