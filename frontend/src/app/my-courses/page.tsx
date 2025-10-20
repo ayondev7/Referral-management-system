@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { usePurchasedCourses } from '@/hooks';
 import PurchasedCoursesTable from '@/components/purchase/PurchasedCoursesTable';
 import Pagination from '@/components/ui/Pagination';
@@ -143,9 +144,11 @@ export default function MyCoursesPage() {
               >
                 <div className="relative w-full h-48 bg-slate-100">
                   {purchase.courseId?.imageUrl ? (
-                    <img
+                    <Image
                       src={purchase.courseId.imageUrl}
                       alt={purchase.courseId.title || purchase.courseName}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                   ) : (

@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { status } = useSession();
-  const { data: user, isLoading } = useUser();
+  const { data: user } = useUser();
   const [loggingOut, setLoggingOut] = useState(false);
 
   const isAuthenticated = status === 'authenticated';
@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
     try {
       setLoggingOut(true);
       await signOut({ redirect: true, callbackUrl: CLIENT_ROUTES.HOME });
-    } catch (err) {
+    } catch {
       try {
         await signOut({ redirect: false });
       } finally {

@@ -1,12 +1,12 @@
 import { withAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { CLIENT_ROUTES } from '@/routes';
 import { AUTH_ROUTES } from '@/routes/authRoutes';
 
 export default withAuth(
-  async function middleware(req: Request & { nextauth?: { token?: unknown } }) {
-    const token = req.nextauth?.token as unknown;
+  async function middleware(req: NextRequest & { nextauth?: { token?: unknown } }) {
     const pathname = req.nextUrl.pathname;
+    const token = req.nextauth?.token as unknown;
 
     const authRoutes = ['/', '/register'];
     const isAuthRoute = authRoutes.includes(pathname);
@@ -30,8 +30,8 @@ export default withAuth(
             return NextResponse.redirect(new URL(CLIENT_ROUTES.DASHBOARD, req.url));
           }
         }
-      } catch (error) {
-        console.error('Token verification failed:', error);
+      } catch {
+        console.error('Token verification failed');
       }
     }
 
@@ -57,7 +57,7 @@ export default withAuth(
         if (!response.ok) {
           return NextResponse.redirect(new URL('/', req.url));
         }
-      } catch (error) {
+      } catch {
         return NextResponse.redirect(new URL('/', req.url));
       }
     }
@@ -66,7 +66,7 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => {
+      authorized: () => {
         return true;
       },
     },

@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { useRouter, useParams, useSearchParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';
 import Image from 'next/image';
 import { useAuthStore } from '@store/authStore';
@@ -12,16 +12,6 @@ import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import PaymentForm from '@components/dashboard/PaymentForm';
 
-interface Course {
-  _id: string;
-  title: string;
-  description: string;
-  author: string;
-  price: number;
-  imageUrl: string;
-  category?: string;
-}
-
 export default function CoursePurchasePage() {
   const router = useRouter();
   const params = useParams();
@@ -32,10 +22,9 @@ export default function CoursePurchasePage() {
   type SessionWithToken = { accessToken?: string };
   const hasAccessToken = !!(session && 'accessToken' in session && (session as SessionWithToken).accessToken);
   const isAuthenticated = status === 'authenticated' || !!storeAuth || hasAccessToken;
-  const searchParams = useSearchParams();
   const autoInitiatedRef = useRef(false);
   
-  const { data: course, isLoading: loading, error } = useCourse(courseId);
+  const { data: course, isLoading: loading } = useCourse(courseId);
   const initiatePurchaseMutation = useInitiatePurchase();
   const [purchaseId, setPurchaseId] = useState<string | null>(null);
 
