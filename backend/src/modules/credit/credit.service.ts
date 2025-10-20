@@ -1,4 +1,4 @@
-import { User } from '../user/user.model';
+import { User } from '../auth/auth.model';
 import { ReferralService } from '../referral/referral.service';
 import { config } from '../../config/env';
 

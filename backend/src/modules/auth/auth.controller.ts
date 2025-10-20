@@ -1,27 +1,11 @@
 import { Request, Response } from 'express';
-import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 import { asyncHandler } from '../../utils/asyncHandler';
 import { verifyRefreshToken, generateAccessToken } from '../../utils/jwt';
 import { AuthRequest } from '../../middleware/auth.middleware';
-import { z } from 'zod';
+import { registerSchema, loginSchema, refreshSchema } from './auth.validation';
 
-const userService = new UserService();
-
-const registerSchema = z.object({
-  name: z.string().min(1, 'Please enter your name'),
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters long'),
-  referralCode: z.string().optional()
-});
-
-const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(1, 'Please enter your password')
-});
-
-const refreshSchema = z.object({
-  refreshToken: z.string().min(1)
-});
+const authService = new AuthService();
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const validation = registerSchema.safeParse(req.body);
@@ -34,7 +18,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
-  const result = await userService.register(validation.data);
+  const result = await authService.register(validation.data);
   return res.status(201).json(result);
 });
 
@@ -49,7 +33,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
-  const result = await userService.login(validation.data.email, validation.data.password);
+  const result = await authService.login(validation.data.email, validation.data.password);
   return res.status(200).json(result);
 });
 
@@ -83,7 +67,7 @@ export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) =
     return res.status(401).json({ message: 'Unauthorized', statusCode: 401 });
   }
 
-  const user = await userService.getUserById(req.user.id);
+  const user = await authService.getUserById(req.user.id);
   return res.status(200).json({
     id: user._id,
     name: user.name,

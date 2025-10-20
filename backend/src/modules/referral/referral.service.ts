@@ -1,5 +1,5 @@
 import { Referral } from './referral.model';
-import { User } from '../user/user.model';
+import { User } from '../auth/auth.model';
 import mongoose from 'mongoose';
 
 interface ReferralChartData {

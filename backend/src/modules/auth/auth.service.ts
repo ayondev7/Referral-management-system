@@ -1,10 +1,10 @@
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
-import { User, IUser } from './user.model';
+import { User} from './auth.model';
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
 import { nanoid } from 'nanoid';
 
-export class UserService {
+export class AuthService {
   async register(data: {
     name: string;
     email: string;
