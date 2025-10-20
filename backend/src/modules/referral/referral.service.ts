@@ -90,25 +90,26 @@ export class ReferralService {
   async getReferralAnalytics(userId: string, timeRange: 'daily' | 'monthly' | 'yearly'): Promise<{ chartData: ReferralChartData; stats: any }> {
     const now = new Date();
     let startDate: Date;
+    let endDate: Date;
     let labels: string[] = [];
     let groupFormat: string;
 
     if (timeRange === 'daily') {
-      startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+      startDate = todayStart;
+      endDate = todayEnd;
       groupFormat = '%Y-%m-%d';
-      for (let i = 29; i >= 0; i--) {
-        const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-        labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-      }
+      labels = ['Today'];
     } else if (timeRange === 'monthly') {
-      startDate = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+      startDate = new Date(now.getFullYear(), 0, 1);
+      endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
       groupFormat = '%Y-%m';
-      for (let i = 11; i >= 0; i--) {
-        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-        labels.push(date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
-      }
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      labels = monthNames;
     } else {
       startDate = new Date(now.getFullYear() - 4, 0, 1);
+      endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
       groupFormat = '%Y';
       for (let i = 4; i >= 0; i--) {
         labels.push((now.getFullYear() - i).toString());
@@ -120,7 +121,7 @@ export class ReferralService {
         $match: {
           referrerId: new mongoose.Types.ObjectId(userId),
           status: 'converted',
-          createdAt: { $gte: startDate }
+          createdAt: { $gte: startDate, $lte: endDate }
         }
       },
       {
@@ -138,7 +139,7 @@ export class ReferralService {
         $match: {
           referrerId: new mongoose.Types.ObjectId(userId),
           status: 'pending',
-          createdAt: { $gte: startDate }
+          createdAt: { $gte: startDate, $lte: endDate }
         }
       },
       {
@@ -158,16 +159,12 @@ export class ReferralService {
     const pendingData: number[] = [];
 
     if (timeRange === 'daily') {
-      for (let i = 29; i >= 0; i--) {
-        const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-        const dateStr = date.toISOString().split('T')[0];
-        convertedData.push(convertedMap.get(dateStr) || 0);
-        pendingData.push(pendingMap.get(dateStr) || 0);
-      }
+      const dateStr = now.toISOString().split('T')[0];
+      convertedData.push(convertedMap.get(dateStr) || 0);
+      pendingData.push(pendingMap.get(dateStr) || 0);
     } else if (timeRange === 'monthly') {
-      for (let i = 11; i >= 0; i--) {
-        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-        const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      for (let month = 0; month < 12; month++) {
+        const dateStr = `${now.getFullYear()}-${String(month + 1).padStart(2, '0')}`;
         convertedData.push(convertedMap.get(dateStr) || 0);
         pendingData.push(pendingMap.get(dateStr) || 0);
       }
