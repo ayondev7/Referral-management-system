@@ -6,11 +6,11 @@ import Image from 'next/image';
 import { useAuthStore } from '@store/authStore';
 import { useSession } from 'next-auth/react';
 import { useCourse, useInitiatePurchase } from '@/hooks';
-import { Card } from '@components/ui/Card';
-import { Loader } from '@components/ui/Loader';
+import Card from '@components/ui/Card';
+import Loader from '@components/ui/Loader';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { PaymentForm } from '@components/dashboard/PaymentForm';
+import PaymentForm from '@components/dashboard/PaymentForm';
 
 interface Course {
   _id: string;

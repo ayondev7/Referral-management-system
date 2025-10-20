@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { LoginForm } from '@components/auth/LoginForm';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Loader } from '@components/ui/Loader';
+import LoginForm from '@components/auth/LoginForm';
+import { useSession } from 'next-auth/react';
 import { CLIENT_ROUTES } from '@/routes';
+import Loader from '@components/ui/Loader';
 
 export default function Home() {
   const { data: session, status } = useSession();

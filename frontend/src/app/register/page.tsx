@@ -1,8 +1,8 @@
 'use client';
 
 import React, { Suspense, useEffect } from 'react';
-import { RegisterForm } from '@components/auth/RegisterForm';
-import { Loader } from '@components/ui/Loader';
+import RegisterForm from '@components/auth/RegisterForm';
+import Loader from '@components/ui/Loader';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';

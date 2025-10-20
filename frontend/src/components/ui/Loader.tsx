@@ -6,7 +6,7 @@ interface LoaderProps {
   className?: string;
 }
 
-export const Loader: React.FC<LoaderProps> = ({ size = 'md', className = '' }) => {
+const Loader: React.FC<LoaderProps> = ({ size = 'md', className = '' }) => {
   const iconSizes = {
     sm: 18,
     md: 36,
@@ -21,3 +21,5 @@ export const Loader: React.FC<LoaderProps> = ({ size = 'md', className = '' }) =
     </div>
   );
 };
+
+export default Loader;

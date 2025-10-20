@@ -6,7 +6,7 @@ interface PurchasedCoursesTableProps {
   purchases: PurchasedCourse[];
 }
 
-export const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ purchases }) => {
+const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ purchases }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -209,3 +209,5 @@ export const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ pu
     </div>
   );
 };
+
+export default PurchasedCoursesTable;

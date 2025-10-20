@@ -2,9 +2,9 @@
 
 import { Inter } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
-import { SessionProvider } from '@components/providers/SessionProvider';
-import { QueryProvider } from '@components/providers/QueryProvider';
-import { Layout } from '@components/shared/Layout';
+import SessionProvider from '@components/providers/SessionProvider';
+import QueryProvider from '@components/providers/QueryProvider';
+import Layout from '@components/shared/Layout';
 import "./globals.css";
 
 const inter = Inter({

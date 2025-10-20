@@ -7,8 +7,8 @@ import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { Input } from '@components/ui/Input';
-import { Button } from '@components/ui/Button';
+import Input from '@components/ui/Input';
+import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
 
 const loginSchema = z.object({
@@ -18,7 +18,7 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export const LoginForm: React.FC = () => {
+const LoginForm: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -89,3 +89,5 @@ export const LoginForm: React.FC = () => {
     </form>
   );
 };
+
+export default LoginForm;

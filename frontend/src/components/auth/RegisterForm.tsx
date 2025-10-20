@@ -9,8 +9,8 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { authAPI } from '@lib/api';
-import { Input } from '@components/ui/Input';
-import { Button } from '@components/ui/Button';
+import Input from '@components/ui/Input';
+import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
 
 const registerSchema = z.object({
@@ -26,7 +26,7 @@ const registerSchema = z.object({
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-export const RegisterForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
@@ -130,3 +130,5 @@ export const RegisterForm: React.FC = () => {
     </form>
   );
 };
+
+export default RegisterForm;

@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@components/ui/Button';
+import Button from '@components/ui/Button';
 
 interface Course {
   _id: string;
@@ -21,7 +21,7 @@ interface CourseCardProps {
   index?: number;
 }
 
-export const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
+const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
 
   const truncatedDescription =
     course.description.length > 120
@@ -87,3 +87,5 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => 
     </motion.div>
   );
 };
+
+export default CourseCard;

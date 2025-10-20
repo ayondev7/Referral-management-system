@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { usePurchasedCourses } from '@/hooks';
-import { PurchasedCoursesTable } from '@/components/purchase/PurchasedCoursesTable';
-import { Pagination } from '@/components/ui/Pagination';
-import { Loader } from '@/components/ui/Loader';
+import PurchasedCoursesTable from '@/components/purchase/PurchasedCoursesTable';
+import Pagination from '@/components/ui/Pagination';
+import Loader from '@/components/ui/Loader';
 
 export default function MyCoursesPage() {
   const [currentPage, setCurrentPage] = useState(1);

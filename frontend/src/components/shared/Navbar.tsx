@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useUser } from '@/hooks/userHooks';
 import Image from 'next/image';
-import { Button } from '@components/ui/Button';
+import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
 
-export const Navbar: React.FC = () => {
+const Navbar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { status } = useSession();
@@ -105,3 +105,5 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
+
+export default Navbar;

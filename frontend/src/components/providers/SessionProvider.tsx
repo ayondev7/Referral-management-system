@@ -15,7 +15,7 @@ function SessionErrorHandler({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
-export function SessionProvider({ children }: { children: ReactNode }) {
+function SessionProvider({ children }: { children: ReactNode }) {
   return (
     <NextAuthSessionProvider refetchInterval={5 * 60} refetchOnWindowFocus={true}>
       <SessionErrorHandler>
@@ -24,3 +24,5 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     </NextAuthSessionProvider>
   );
 }
+
+export default SessionProvider;

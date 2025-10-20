@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { Card } from '@components/ui/Card';
-import { Button } from '@components/ui/Button';
+import Card from '@components/ui/Card';
+import Button from '@components/ui/Button';
 
 interface ReferralCardProps {
   referralLink: string;
 }
 
-export const ReferralCard: React.FC<ReferralCardProps> = ({ referralLink }) => {
+const ReferralCard: React.FC<ReferralCardProps> = ({ referralLink }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -51,3 +51,5 @@ export const ReferralCard: React.FC<ReferralCardProps> = ({ referralLink }) => {
     </motion.div>
   );
 };
+
+export default ReferralCard;

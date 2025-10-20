@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Card } from '@components/ui/Card';
+import Card from '@components/ui/Card';
 
 interface StatsCardProps {
   title: string;
@@ -17,7 +17,7 @@ const gradientClasses: Record<string, string> = {
   'gradient-purple': 'border-l-4 border-l-purple-600 bg-purple-50/50',
 };
 
-export const StatsCard: React.FC<StatsCardProps> = ({ title, value, icon, gradient }) => {
+const StatsCard: React.FC<StatsCardProps> = ({ title, value, icon, gradient }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -36,3 +36,5 @@ export const StatsCard: React.FC<StatsCardProps> = ({ title, value, icon, gradie
     </motion.div>
   );
 };
+
+export default StatsCard;

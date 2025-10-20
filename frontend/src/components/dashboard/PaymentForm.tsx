@@ -7,9 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { usePayPurchase } from '@/hooks';
-import { Card } from '@components/ui/Card';
-import { Button } from '@components/ui/Button';
-import { Input } from '@components/ui/Input';
+import Card from '@components/ui/Card';
+import Button from '@components/ui/Button';
+import Input from '@components/ui/Input';
 
 const purchaseSchema = z.object({
   cardNumber: z.string().min(13, 'Invalid card number'),
@@ -28,7 +28,7 @@ interface PaymentFormProps {
   showCard?: boolean;
 }
 
-export const PaymentForm: React.FC<PaymentFormProps> = ({
+const PaymentForm: React.FC<PaymentFormProps> = ({
   course,
   purchaseId,
   onPaymentSuccess,
@@ -138,3 +138,5 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
     </motion.div>
   );
 };
+
+export default PaymentForm;

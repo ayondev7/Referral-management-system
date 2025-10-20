@@ -6,9 +6,9 @@ import { CLIENT_ROUTES } from '@/routes';
 import { useAuthStore } from '@store/authStore';
 import { useSession } from 'next-auth/react';
 import { useCourses } from '@/hooks';
-import { CourseCard } from '@components/dashboard/CourseCard';
-import { Loader } from '@components/ui/Loader';
-import { Pagination } from '@components/ui/Pagination';
+import CourseCard from '@components/dashboard/CourseCard';
+import Loader from '@components/ui/Loader';
+import Pagination from '@components/ui/Pagination';
 
 export default function CoursesPage() {
   const router = useRouter();

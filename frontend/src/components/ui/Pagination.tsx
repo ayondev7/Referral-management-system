@@ -7,7 +7,7 @@ interface PaginationProps {
   className?: string;
 }
 
-export const Pagination: React.FC<PaginationProps> = ({
+const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
@@ -178,3 +178,5 @@ export const Pagination: React.FC<PaginationProps> = ({
     </nav>
   );
 };
+
+export default Pagination;

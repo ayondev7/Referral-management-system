@@ -4,11 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useDashboard, useLatestCourses } from '@/hooks';
-import { StatsCard } from '@components/dashboard/StatsCard';
-import { ReferralCard } from '@components/dashboard/ReferralCard';
-import { CourseCard } from '@/components/dashboard/CourseCard';
-import { Loader } from '@components/ui/Loader';
-import { Button } from '@components/ui/Button';
+import StatsCard from '@components/dashboard/StatsCard';
+import ReferralCard from '@components/dashboard/ReferralCard';
+import CourseCard from '@/components/dashboard/CourseCard';
+import Loader from '@components/ui/Loader';
+import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
 
 export default function DashboardPage() {
