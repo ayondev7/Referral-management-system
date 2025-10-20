@@ -68,8 +68,13 @@ export interface PurchasedCoursesResponse {
 export interface Referral {
   _id: string;
   referrerId: string;
-  referredUserId: string;
-  status: string;
+  referredId: {
+    _id: string;
+    name: string;
+    email: string;
+    createdAt: string;
+  };
+  status: 'pending' | 'converted';
   createdAt: string;
   updatedAt: string;
 }
@@ -79,4 +84,9 @@ export interface ReferralStats {
   convertedReferrals: number;
   pendingReferrals: number;
   totalCreditsEarned: number;
+}
+
+export interface ReferralsResponse {
+  referrals: Referral[];
+  pagination: Pagination;
 }

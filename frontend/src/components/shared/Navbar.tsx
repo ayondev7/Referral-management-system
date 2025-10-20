@@ -74,6 +74,16 @@ const Navbar: React.FC = () => {
               >
                 My Courses
               </Link>
+              <Link
+                href={CLIENT_ROUTES.MANAGE_REFERRALS}
+                className={`text-sm font-medium transition-colors ${
+                  isActive(CLIENT_ROUTES.MANAGE_REFERRALS)
+                    ? 'text-blue-600'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                Manage Referrals
+              </Link>
             </nav>
           )}
         </div>

@@ -9,4 +9,5 @@ export const CLIENT_ROUTES = {
   COURSES: "/courses",
   PURCHASE: "/purchase",
   MY_COURSES: "/my-courses",
+  MANAGE_REFERRALS: "/manage-referrals",
 } as const;
