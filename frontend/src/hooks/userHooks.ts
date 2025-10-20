@@ -7,7 +7,7 @@ export function useUser() {
   const { data: session, status } = useSession();
 
   return useQuery<User>({
-    queryKey: ['user'],
+    queryKey: ['user', session?.accessToken],
     queryFn: async () => {
       if (!session?.accessToken) {
         throw new Error('No access token available');
@@ -22,7 +22,7 @@ export function useUser() {
       });
     },
     enabled: status === 'authenticated' && !!session?.accessToken,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
     retry: false,
   });
 }

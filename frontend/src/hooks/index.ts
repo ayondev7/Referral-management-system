@@ -3,6 +3,10 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { getSession } from 'next-auth/react';
 import { BASE_URL, CLIENT_ROUTES } from '@/routes';
 
+let cachedSession: { accessToken: string } | null = null;
+let sessionCacheTime = 0;
+const SESSION_CACHE_DURATION = 30000;
+
 export function createQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -25,9 +29,20 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   async (config) => {
     if (typeof window !== 'undefined') {
-      const session = await getSession();
-      if (session?.accessToken) {
-        config.headers.Authorization = `Bearer ${session.accessToken}`;
+      const now = Date.now();
+      
+      if (cachedSession && now - sessionCacheTime < SESSION_CACHE_DURATION) {
+        if (cachedSession?.accessToken) {
+          config.headers.Authorization = `Bearer ${cachedSession.accessToken}`;
+        }
+      } else {
+        const session = await getSession();
+        cachedSession = session as { accessToken: string } | null;
+        sessionCacheTime = now;
+        
+        if (session?.accessToken) {
+          config.headers.Authorization = `Bearer ${session.accessToken}`;
+        }
       }
     }
     return config;
@@ -39,6 +54,9 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
+      cachedSession = null;
+      sessionCacheTime = 0;
+      
       if (typeof window !== 'undefined') {
         window.location.href = CLIENT_ROUTES.HOME;
       }
