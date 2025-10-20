@@ -1,4 +1,5 @@
-import NextAuth, { NextAuthOptions, User as NextAuthUser } from 'next-auth';
+import NextAuth, { NextAuthOptions, User as NextAuthUser, Session } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import axios from 'axios';
 import { AUTH_ROUTES } from '@/routes/authRoutes';
@@ -43,7 +44,7 @@ declare module 'next-auth/jwt' {
   }
 }
 
-async function refreshAccessToken(token: any) {
+async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const response = await axios.post(AUTH_ROUTES.REFRESH, {
       refreshToken: token.refreshToken,
@@ -59,7 +60,7 @@ async function refreshAccessToken(token: any) {
     return {
       ...token,
       error: 'RefreshAccessTokenError',
-    };
+    } as JWT;
   }
 }
 
@@ -105,7 +106,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: 7 * 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user }) {
+  async jwt({ token, user }: { token: JWT; user?: unknown }): Promise<JWT> {
       if (user) {
         const authUser = user as AuthUser;
         token.user = {
@@ -132,7 +133,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token.error === 'RefreshAccessTokenError') {
-        return { ...session, error: 'RefreshAccessTokenError' } as any;
+        return { ...session, error: 'RefreshAccessTokenError' } as Session;
       }
 
       session.user = token.user;

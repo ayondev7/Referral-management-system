@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
-type AuthStore = Record<string, unknown>;
+type AuthStore = {
+	isAuthenticated?: boolean;
+};
 
-export const useAuthStore = create<AuthStore>(() => ({ }));
+export const useAuthStore = create<AuthStore>(() => ({ isAuthenticated: false }));

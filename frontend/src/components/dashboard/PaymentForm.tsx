@@ -63,8 +63,12 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           reset();
           onPaymentSuccess();
         },
-        onError: (error: any) => {
-          toast.error(error?.response?.data?.message || 'Payment failed');
+        onError: (error: unknown) => {
+          const message =
+            typeof error === 'object' && error !== null && 'response' in error
+              ? (error as { response?: { data?: { message?: string } } })?.response?.data?.message
+              : undefined;
+          toast.error(message || 'Payment failed');
         },
       }
     );

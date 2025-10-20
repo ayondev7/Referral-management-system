@@ -26,9 +26,12 @@ export default function CoursePurchasePage() {
   const router = useRouter();
   const params = useParams();
   const courseId = params.id as string;
-  const { isAuthenticated: storeAuth } = useAuthStore() as any;
+  const { isAuthenticated: storeAuth } = useAuthStore();
   const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated' || !!storeAuth || !!(session as any)?.accessToken;
+
+  type SessionWithToken = { accessToken?: string };
+  const hasAccessToken = !!(session && 'accessToken' in session && (session as SessionWithToken).accessToken);
+  const isAuthenticated = status === 'authenticated' || !!storeAuth || hasAccessToken;
   const searchParams = useSearchParams();
   const autoInitiatedRef = useRef(false);
   

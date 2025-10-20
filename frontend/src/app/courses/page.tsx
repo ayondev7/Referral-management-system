@@ -12,9 +12,12 @@ import Pagination from '@components/ui/Pagination';
 
 export default function CoursesPage() {
   const router = useRouter();
-  const { isAuthenticated: storeAuth } = useAuthStore() as any;
+  const { isAuthenticated: storeAuth } = useAuthStore();
   const { data: session, status } = useSession();
-  const isAuthenticated = status === 'authenticated' || !!storeAuth || !!(session as any)?.accessToken;
+
+  type SessionWithToken = { accessToken?: string };
+  const hasAccessToken = !!(session && 'accessToken' in session && (session as SessionWithToken).accessToken);
+  const isAuthenticated = status === 'authenticated' || !!storeAuth || hasAccessToken;
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading } = useCourses(currentPage, 9);

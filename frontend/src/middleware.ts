@@ -4,8 +4,8 @@ import { CLIENT_ROUTES } from '@/routes';
 import { AUTH_ROUTES } from '@/routes/authRoutes';
 
 export default withAuth(
-  async function middleware(req) {
-    const token = req.nextauth.token;
+  async function middleware(req: Request & { nextauth?: { token?: unknown } }) {
+    const token = req.nextauth?.token as unknown;
     const pathname = req.nextUrl.pathname;
 
     const authRoutes = ['/', '/register'];
@@ -16,7 +16,9 @@ export default withAuth(
 
     if (isAuthRoute && token) {
       try {
-        const accessToken = (token as any)?.accessToken;
+        const accessToken = typeof token === 'object' && token !== null && 'accessToken' in (token as object)
+          ? (token as { accessToken?: string }).accessToken
+          : undefined;
         if (accessToken) {
           const response = await fetch(AUTH_ROUTES.ME, {
             headers: {
@@ -39,7 +41,9 @@ export default withAuth(
 
     if (isProtectedRoute && token) {
       try {
-        const accessToken = (token as any)?.accessToken;
+        const accessToken = typeof token === 'object' && token !== null && 'accessToken' in (token as object)
+          ? (token as { accessToken?: string }).accessToken
+          : undefined;
         if (!accessToken) {
           return NextResponse.redirect(new URL('/', req.url));
         }
