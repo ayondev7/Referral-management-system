@@ -57,7 +57,7 @@ export default function CoursePurchasePage() {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] flex items-center justify-center bg-slate-50">
+      <div className="min-h-[calc(100vh-140px)] flex items-center justify-center bg-slate-50 px-4">
         <Loader size="lg" />
       </div>
     );
@@ -68,7 +68,7 @@ export default function CoursePurchasePage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-140px)] py-12 px-8 bg-slate-50">
+    <div className="min-h-[calc(100vh-140px)] py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8 bg-slate-50">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -76,23 +76,23 @@ export default function CoursePurchasePage() {
           transition={{ duration: 0.4 }}
         >
           <Card>
-            <div className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20">
+            <div className="p-4 sm:p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-x-20">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900 mb-4">{course.title}</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4">{course.title}</h2>
                   <div className="mb-4">
                     <Image
                       src={course.imageUrl}
                       alt={course.title}
                       width={400}
                       height={250}
-                      className="w-full h-48 object-cover rounded-lg"
+                      className="w-full h-40 sm:h-48 object-cover rounded-lg"
                     />
                   </div>
-                  <p className="text-slate-700 mb-4">{course.description}</p>
-                  <div className="flex justify-between items-center">
-                    <p className="text-lg font-semibold text-slate-900">Author: {course.author}</p>
-                    <p className="text-2xl font-bold text-blue-600">${course.price}</p>
+                  <p className="text-sm sm:text-base text-slate-700 mb-4">{course.description}</p>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
+                    <p className="text-base sm:text-lg font-semibold text-slate-900">Author: {course.author}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-blue-600">${course.price}</p>
                   </div>
                   {course.category && (
                     <p className="text-sm text-slate-500 mt-2">Category: {course.category}</p>

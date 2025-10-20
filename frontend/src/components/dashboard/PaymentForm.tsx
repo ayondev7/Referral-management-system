@@ -76,9 +76,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
 
   const formContent = (
     <>
-      <h3 className="text-2xl font-semibold mb-6 text-slate-900">Complete Payment to purchase this course</h3>
+      <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 sm:mb-6 text-slate-900">Complete Payment to purchase this course</h3>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:gap-4">
         <Input
           label="Card Number"
           {...register('cardNumber')}
@@ -86,7 +86,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           placeholder="1234 5678 9012 3456"
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <Input
             label="Expiry"
             {...register('expiry')}
@@ -108,7 +108,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           placeholder="John Doe"
         />
 
-        <div className="flex gap-4 mt-4 flex-col sm:flex-row">
+        <div className="flex gap-3 sm:gap-4 mt-2 sm:mt-4 flex-col sm:flex-row">
           <Button
             type="button"
             variant="outline"
@@ -130,7 +130,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.4 }}
-      className="mb-8"
+      className="mb-6 sm:mb-8"
     >
       {showCard ? (
         <Card>

@@ -23,7 +23,7 @@ export default function RegisterPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-8 bg-slate-100">
+      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-slate-100">
         <Loader />
       </div>
     );
@@ -31,14 +31,14 @@ export default function RegisterPage() {
 
   if (status === 'authenticated') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-8 bg-slate-100">
+      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-slate-100">
         <Loader />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8 bg-slate-100">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-slate-100">
       <div className="w-full max-w-md">
         <Suspense fallback={<Loader />}>
           <RegisterContent />

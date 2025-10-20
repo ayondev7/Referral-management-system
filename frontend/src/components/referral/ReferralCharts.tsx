@@ -139,21 +139,21 @@ export default function ReferralCharts({ data, timeRange }: ReferralChartsProps)
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4 text-center">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-3 sm:mb-4 text-center">
           Status Distribution
         </h3>
-        <div className="h-64">
+        <div className="h-56 sm:h-64">
           <Doughnut data={doughnutData} options={doughnutOptions} />
         </div>
       </div>
 
-      <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">
+      <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-3 sm:mb-4">
           Referrals Over Time
         </h3>
-        <div className="h-64">
+        <div className="h-56 sm:h-64">
           <Bar data={barData} options={barOptions} />
         </div>
       </div>

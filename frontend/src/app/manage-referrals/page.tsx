@@ -83,29 +83,33 @@ export default function ManageReferralsPage() {
   const totalReferrals = pagination?.totalItems || 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6 xl:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <div className="flex flex-col gap-4">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col gap-4 sm:gap-6">
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
                 Manage Referrals
               </h1>
-              <p className="text-slate-600">
+              <p className="text-sm sm:text-base text-slate-600">
                 {totalReferrals > 0
                   ? `You have referred ${totalReferrals} ${totalReferrals === 1 ? 'user' : 'users'}`
                   : 'Start earning credits by referring friends'}
               </p>
             </div>
             
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 justify-between">
-              <div className="flex-1 w-full lg:w-auto">
+            <div className="flex flex-col xl:flex-row items-stretch xl:items-end gap-4 xl:gap-6">
+              <div className="flex-1 w-full">
                 {referralLink && <ReferralCard referralLink={referralLink} />}
               </div>
               
-              <div className="flex items-center gap-4">
-                <ReferralStatsCard referrals={referrals} />
-                <Tabs tabs={TABS} activeTab={timeRange} onTabChange={setTimeRange} />
+              <div className="flex flex-col sm:flex-row xl:flex-col 2xl:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+                <div className="flex-1 sm:flex-initial">
+                  <ReferralStatsCard referrals={referrals} />
+                </div>
+                <div className="flex-1 sm:flex-initial">
+                  <Tabs tabs={TABS} activeTab={timeRange} onTabChange={setTimeRange} />
+                </div>
               </div>
             </div>
           </div>
