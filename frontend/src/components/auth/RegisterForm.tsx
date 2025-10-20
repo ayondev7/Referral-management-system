@@ -1,4 +1,4 @@
-'use client';
+ 'use client';
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -12,6 +12,7 @@ import { authAPI } from '@lib/api';
 import Input from '@components/ui/Input';
 import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
@@ -30,9 +31,10 @@ const RegisterForm: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const referralCode = searchParams.get('ref') || '';
-
   const {
     register,
     handleSubmit,
@@ -48,9 +50,9 @@ const RegisterForm: React.FC = () => {
     try {
       setLoading(true);
       const { ...registerData } = data;
-      
+
       await authAPI.register(registerData);
-      
+
       const result = await signIn('credentials', {
         email: registerData.email,
         password: registerData.password,
@@ -78,46 +80,74 @@ const RegisterForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg border border-slate-200 flex flex-col gap-4 sm:gap-6">
       <h1 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 mb-1 sm:mb-2">Register</h1>
-      
-      <Input
-        label="Name"
-        type="text"
-        {...register('name')}
-        error={errors.name?.message}
-        placeholder="Enter your name"
-      />
 
-      <Input
-        label="Email"
-        type="email"
-        {...register('email')}
-        error={errors.email?.message}
-        placeholder="Enter your email"
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Input
+            label="Name"
+            type="text"
+            {...register('name')}
+            error={errors.name?.message}
+            placeholder="Enter your name"
+          />
+        </div>
 
-      <Input
-        label="Password"
-        type="password"
-        {...register('password')}
-        error={errors.password?.message}
-        placeholder="Enter your password"
-      />
+        <div>
+          <Input
+            label="Email"
+            type="email"
+            {...register('email')}
+            error={errors.email?.message}
+            placeholder="Enter your email"
+          />
+        </div>
 
-      <Input
-        label="Confirm Password"
-        type="password"
-        {...register('confirmPassword')}
-        error={errors.confirmPassword?.message}
-        placeholder="Confirm your password"
-      />
+        <div className="relative">
+          <Input
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+            error={errors.password?.message}
+            placeholder="Enter your password"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((s) => !s)}
+            className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-700"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+          >
+            {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+          </button>
+        </div>
 
-      <Input
-        label="Referral Code (Optional)"
-        type="text"
-        {...register('referralCode')}
-        error={errors.referralCode?.message}
-        placeholder="Enter referral code"
-      />
+        <div className="relative">
+          <Input
+            label="Confirm Password"
+            type={showConfirmPassword ? 'text' : 'password'}
+            {...register('confirmPassword')}
+            error={errors.confirmPassword?.message}
+            placeholder="Confirm your password"
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword((s) => !s)}
+            className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-700"
+            aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+          >
+            {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+          </button>
+        </div>
+
+        <div className="md:col-span-2">
+          <Input
+            label="Referral Code (Optional)"
+            type="text"
+            {...register('referralCode')}
+            error={errors.referralCode?.message}
+            placeholder="Enter referral code"
+          />
+        </div>
+      </div>
 
       <Button type="submit" loading={loading} className="w-full">
         Register
