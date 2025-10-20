@@ -1,9 +1,11 @@
-import { useQuery, apiRequest } from '@/hooks';
+import { useQuery as useReactQuery } from '@tanstack/react-query';
+import { apiRequest } from '@/hooks';
 import { REFERRAL_ROUTES } from '@/routes/referralRoutes';
-import { Referral, ReferralStats, ReferralsResponse } from '@/types';
+import { Referral, ReferralStats, ReferralsResponse, ReferralAnalyticsResponse } from '@/types';
+import { TabOption } from '@/components/ui/Tabs';
 
 export function useReferrals() {
-  return useQuery<Referral[]>({
+  return useReactQuery<Referral[]>({
     queryKey: ['referrals'],
     queryFn: async () => {
       return await apiRequest<Referral[]>({
@@ -16,7 +18,7 @@ export function useReferrals() {
 }
 
 export function useReferralsPaginated(page: number = 1, limit: number = 8) {
-  return useQuery<ReferralsResponse>({
+  return useReactQuery<ReferralsResponse>({
     queryKey: ['referrals', 'paginated', page, limit],
     queryFn: async () => {
       return await apiRequest<ReferralsResponse>({
@@ -29,12 +31,25 @@ export function useReferralsPaginated(page: number = 1, limit: number = 8) {
 }
 
 export function useReferralStats() {
-  return useQuery<ReferralStats>({
+  return useReactQuery<ReferralStats>({
     queryKey: ['referralStats'],
     queryFn: async () => {
       return await apiRequest<ReferralStats>({
         method: 'GET',
         url: REFERRAL_ROUTES.GET_STATS,
+      });
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useReferralAnalytics(timeRange: TabOption) {
+  return useReactQuery<ReferralAnalyticsResponse>({
+    queryKey: ['referralAnalytics', timeRange],
+    queryFn: async () => {
+      return await apiRequest<ReferralAnalyticsResponse>({
+        method: 'GET',
+        url: `${REFERRAL_ROUTES.GET_ANALYTICS}?timeRange=${timeRange}`,
       });
     },
     staleTime: 5 * 60 * 1000,

@@ -6,10 +6,18 @@ import { usePurchasedCourses } from '@/hooks';
 import PurchasedCoursesTable from '@/components/purchase/PurchasedCoursesTable';
 import Pagination from '@/components/ui/Pagination';
 import Loader from '@/components/ui/Loader';
+import Tabs from '@/components/ui/Tabs';
+
+type ViewMode = 'table' | 'grid';
+
+const VIEW_TABS = [
+  { id: 'table' as ViewMode, label: 'Table View' },
+  { id: 'grid' as ViewMode, label: 'Grid View' },
+];
 
 export default function MyCoursesPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
+  const [viewMode, setViewMode] = useState<ViewMode>('table');
   const itemsPerPage = 8;
 
   const { data, isLoading, error } = usePurchasedCourses(currentPage, itemsPerPage);
@@ -82,54 +90,11 @@ export default function MyCoursesPage() {
               </p>
             </div>
             
-            <div className="flex items-center gap-2 bg-white rounded-lg shadow-sm border border-slate-200 p-1">
-              <button 
-                onClick={() => setViewMode('table')}
-                className={`flex items-center justify-center h-9 px-4 rounded-md text-sm font-medium transition-all ${
-                  viewMode === 'table' 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 
-                    : 'text-slate-600 hover:bg-slate-50'
-                }`}
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 10h16M4 14h16M4 18h16"
-                  />
-                </svg>
-                Table View
-              </button>
-              <button 
-                onClick={() => setViewMode('grid')}
-                className={`flex items-center justify-center h-9 px-4 rounded-md text-sm font-medium transition-all ${
-                  viewMode === 'grid' 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 
-                    : 'text-slate-600 hover:bg-slate-50'
-                }`}
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  />
-                </svg>
-                Grid View
-              </button>
-            </div>
+            <Tabs<ViewMode>
+              tabs={VIEW_TABS} 
+              activeTab={viewMode} 
+              onTabChange={setViewMode} 
+            />
           </div>
         </div>
 

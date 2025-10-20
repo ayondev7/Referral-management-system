@@ -81,4 +81,4 @@ export { useUser } from './userHooks';
 export { useCourse, useCourses, useLatestCourses } from './courseHooks';
 export { useInitiatePurchase, usePayPurchase, usePurchasedCourses } from './purchaseHooks';
 export { useDashboard } from './dashboardHooks';
-export { useReferrals, useReferralsPaginated, useReferralStats } from './referralHooks';
+export { useReferrals, useReferralsPaginated, useReferralStats, useReferralAnalytics } from './referralHooks';

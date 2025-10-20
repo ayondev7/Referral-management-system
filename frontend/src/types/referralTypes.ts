@@ -25,3 +25,20 @@ export interface ReferralsResponse {
   referrals: Referral[];
   pagination: Pagination;
 }
+
+export interface ReferralChartData {
+  converted: number;
+  pending: number;
+  labels: string[];
+  convertedData: number[];
+  pendingData: number[];
+}
+
+export interface ReferralAnalyticsResponse {
+  chartData: ReferralChartData;
+  stats: {
+    totalReferrals: number;
+    convertedReferrals: number;
+    pendingReferrals: number;
+  };
+}

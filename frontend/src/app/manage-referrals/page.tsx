@@ -1,17 +1,27 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useReferralsPaginated } from '@/hooks';
+import { useReferralsPaginated, useReferralAnalytics } from '@/hooks';
 import ReferralsTable from '@/components/referral/ReferralsTable';
+import ReferralCharts from '@/components/referral/ReferralCharts';
 import Pagination from '@/components/ui/Pagination';
 import Loader from '@/components/ui/Loader';
+import Tabs, { TabOption } from '@/components/ui/Tabs';
 import { Referral } from '@/types';
+
+const TABS = [
+  { id: 'daily' as TabOption, label: 'Daily' },
+  { id: 'monthly' as TabOption, label: 'Monthly' },
+  { id: 'yearly' as TabOption, label: 'Yearly' },
+];
 
 export default function ManageReferralsPage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [timeRange, setTimeRange] = useState<TabOption>('monthly');
   const itemsPerPage = 8;
 
   const { data, isLoading, error } = useReferralsPaginated(currentPage, itemsPerPage);
+  const { data: analyticsData, isLoading: analyticsLoading } = useReferralAnalytics(timeRange);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -134,6 +144,18 @@ export default function ManageReferralsPage() {
             </div>
           </div>
         </div>
+
+        <div className="mb-6 flex justify-end">
+          <Tabs tabs={TABS} activeTab={timeRange} onTabChange={setTimeRange} />
+        </div>
+
+        {analyticsLoading ? (
+          <div className="flex items-center justify-center h-64 mb-8">
+            <Loader />
+          </div>
+        ) : analyticsData?.chartData ? (
+          <ReferralCharts data={analyticsData.chartData} timeRange={timeRange} />
+        ) : null}
 
         <ReferralsTable referrals={referrals} />
 

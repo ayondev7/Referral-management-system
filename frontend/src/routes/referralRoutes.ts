@@ -6,4 +6,5 @@ export const REFERRAL_ROUTES = {
   GET_ALL: REFERRAL_BASE,
   GET_PAGINATED: `${REFERRAL_BASE}/paginated`,
   GET_STATS: `${REFERRAL_BASE}/stats`,
+  GET_ANALYTICS: `${REFERRAL_BASE}/analytics`,
 } as const;
