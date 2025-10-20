@@ -54,4 +54,28 @@ export class ReferralService {
 
     return referrals;
   }
+
+  async getUserReferralsPaginated(userId: string, page: number = 1, limit: number = 8) {
+    const skip = (page - 1) * limit;
+
+    const referrals = await Referral.find({ referrerId: userId })
+      .populate('referredId', 'name email createdAt')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Referral.countDocuments({ referrerId: userId });
+
+    return {
+      referrals,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+        limit,
+        hasNextPage: page * limit < total,
+        hasPreviousPage: page > 1
+      }
+    };
+  }
 }
