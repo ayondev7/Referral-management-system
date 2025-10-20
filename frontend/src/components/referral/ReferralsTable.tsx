@@ -75,7 +75,7 @@ const ReferralsTable: React.FC<ReferralsTableProps> = ({ referrals }) => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+              <tr className="bg-slate-50 border-b border-slate-200">
                 <th className="text-left py-3 lg:py-4 px-3 lg:px-6 text-xs font-semibold text-slate-700 uppercase tracking-wider">
                   #
                 </th>

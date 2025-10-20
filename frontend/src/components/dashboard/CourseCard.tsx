@@ -37,7 +37,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
     >
       <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col border border-slate-200">
 
-        <div className="relative w-full h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
+  <div className="relative w-full h-48 overflow-hidden bg-blue-50">
           <Image
             src={course.imageUrl}
             alt={course.title}
@@ -72,7 +72,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
 
           <div className="flex items-center justify-between pt-4 border-t border-slate-200">
             <div className="flex flex-col">
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold text-blue-600">
                 ${course.price}
               </span>
             </div>

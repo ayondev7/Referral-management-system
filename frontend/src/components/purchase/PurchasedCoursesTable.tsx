@@ -73,7 +73,7 @@ const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ purchases
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+              <tr className="bg-slate-50 border-b border-slate-200">
                 <th className="text-left py-3 lg:py-4 px-3 lg:px-6 text-xs font-semibold text-slate-700 uppercase tracking-wider">
                   Course
                 </th>
@@ -130,7 +130,7 @@ const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ purchases
                           {purchase.courseId?.title || purchase.courseName}
                         </p>
                         {purchase.isFirstPurchase && (
-                          <span className="inline-flex items-center w-fit mt-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                          <span className="inline-flex items-center w-fit mt-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white">
                             <svg
                               className="w-3 h-3 mr-1"
                               fill="currentColor"
@@ -218,7 +218,7 @@ const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ purchases
                 <div className="flex items-center gap-2 flex-wrap">
                   {getLevelBadge(purchase.courseId?.category)}
                   {purchase.isFirstPurchase && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white">
                       <svg
                         className="w-3 h-3 mr-1"
                         fill="currentColor"

@@ -131,7 +131,7 @@ const Pagination: React.FC<PaginationProps> = ({
                 transition-all duration-200
                 ${
                   isActive
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
+                    ? 'bg-blue-600 text-white shadow-md'
                     : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300'
                 }
               `}

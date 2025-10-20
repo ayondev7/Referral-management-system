@@ -24,7 +24,7 @@ export default function Tabs<T extends string = TabOption>({ tabs, activeTab, on
           onClick={() => onTabChange(tab.id)}
           className={`flex items-center justify-center h-9 px-6 rounded-md text-sm font-medium transition-all ${
             activeTab === tab.id
-              ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
+              ? 'bg-blue-600 text-white shadow-md'
               : 'text-slate-600 hover:bg-slate-50'
           }`}
         >
