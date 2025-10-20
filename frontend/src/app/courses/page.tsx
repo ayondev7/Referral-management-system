@@ -6,7 +6,7 @@ import { CLIENT_ROUTES } from '@/routes';
 import { useAuthStore } from '@store/authStore';
 import { useSession } from 'next-auth/react';
 import { courseAPI } from '@lib/api';
-import { CourseItem } from '@components/dashboard/CourseItem';
+import { CourseCard } from '@components/dashboard/CourseCard';
 import { Loader } from '@components/ui/Loader';
 import { Pagination } from '@components/ui/Pagination';
 

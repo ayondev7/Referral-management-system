@@ -16,13 +16,13 @@ interface Course {
   category?: string;
 }
 
-interface CourseItemProps {
+interface CourseCardProps {
   course: Course;
   index?: number;
 }
 
-export const CourseItem: React.FC<CourseItemProps> = ({ course, index = 0 }) => {
-  // Truncate description to 120 characters
+export const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
+
   const truncatedDescription =
     course.description.length > 120
       ? course.description.substring(0, 120) + '...'
@@ -36,7 +36,7 @@ export const CourseItem: React.FC<CourseItemProps> = ({ course, index = 0 }) => 
       className="group"
     >
       <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col border border-slate-200">
-        {/* Course Image */}
+
         <div className="relative w-full h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
           <Image
             src={course.imageUrl}
@@ -54,22 +54,22 @@ export const CourseItem: React.FC<CourseItemProps> = ({ course, index = 0 }) => 
           )}
         </div>
 
-        {/* Course Content */}
+
         <div className="p-5 flex flex-col flex-grow">
-          {/* Course Title */}
+
           <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
             {course.title}
           </h3>
 
-          {/* Author */}
+
           <p className="text-sm text-slate-600 mb-3">{course.author}</p>
 
-          {/* Description */}
+
           <p className="text-sm text-slate-600 mb-4 flex-grow line-clamp-3">
             {truncatedDescription}
           </p>
 
-          {/* Price and Button */}
+
           <div className="flex items-center justify-between pt-4 border-t border-slate-200">
             <div className="flex flex-col">
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
