@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';
 import Image from 'next/image';
 import Button from '@components/ui/Button';
+import { LuX } from 'react-icons/lu';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -38,15 +39,15 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 lg:hidden ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
       />
 
       <aside
-        className={`fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-0 w-full h-full bg-white shadow-2xl z-60 transform transition-transform duration-300 ease-in-out lg:hidden ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
@@ -59,19 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
               aria-label="Close menu"
             >
-              <svg
-                className="w-6 h-6 text-slate-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <LuX className="w-6 h-6 text-slate-600" />
             </button>
           </div>
 
