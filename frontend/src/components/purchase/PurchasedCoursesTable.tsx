@@ -112,9 +112,6 @@ const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ purchases
               <th className="text-left py-4 px-6 text-xs font-semibold text-slate-700 uppercase tracking-wider">
                 Purchased On
               </th>
-              <th className="text-left py-4 px-6 text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                Status
-              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
@@ -196,10 +193,6 @@ const PurchasedCoursesTable: React.FC<PurchasedCoursesTableProps> = ({ purchases
                       {formatTime(purchase.paymentInfo?.paidAt || purchase.createdAt)}
                     </p>
                   </div>
-                </td>
-
-                <td className="py-4 px-6">
-                  {getStatusBadge(purchase.status)}
                 </td>
               </tr>
             ))}
