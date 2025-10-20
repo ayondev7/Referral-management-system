@@ -49,7 +49,6 @@ export class UserService {
         referredId: user._id,
         status: 'pending'
       });
-      console.log(`Referral record created: referrer=${referrerId}, referred=${user._id}`);
     }
 
     const accessToken = generateAccessToken({ id: (user._id as mongoose.Types.ObjectId).toString(), email: user.email });
@@ -118,7 +117,6 @@ export class UserService {
     }
     user.credits += amount;
     await user.save();
-    console.log(`Added ${amount} credits to user ${userId}. New balance: ${user.credits}`);
     return user;
   }
 }

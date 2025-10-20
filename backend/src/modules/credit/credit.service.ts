@@ -16,8 +16,6 @@ export class CreditService {
     const stats = await referralService.getReferralStats(userId);
 
     const referralLink = `${config.corsOrigin}/register?ref=${user.referralCode}`;
-
-    console.log(`Dashboard fetched for user ${userId}`);
     
     return {
       totalReferredUsers: stats.totalReferredUsers,

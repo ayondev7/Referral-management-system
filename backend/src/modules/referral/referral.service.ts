@@ -6,7 +6,6 @@ export class ReferralService {
   async convertReferral(referredUserId: string) {
     const referredUser = await User.findById(referredUserId);
     if (!referredUser || !referredUser.referrerId) {
-      console.log(`No referrer found for user ${referredUserId}`);
       return null;
     }
 
@@ -17,7 +16,6 @@ export class ReferralService {
     });
 
     if (!referral) {
-      console.log(`No pending referral found for user ${referredUserId}`);
       return null;
     }
 
@@ -28,12 +26,10 @@ export class ReferralService {
     if (referrer) {
       referrer.credits += 2;
       await referrer.save();
-      console.log(`Added 2 credits to referrer ${referrer._id}. New balance: ${referrer.credits}`);
     }
 
     referredUser.credits += 2;
     await referredUser.save();
-    console.log(`Added 2 credits to referred user ${referredUser._id}. New balance: ${referredUser.credits}`);
 
     return referral;
   }

@@ -14,7 +14,6 @@ export class PurchaseService {
       isFirstPurchase: false
     });
 
-    console.log(`Purchase initiated: ${purchase._id} for user ${userId}`);
     return purchase;
   }
 
@@ -61,7 +60,6 @@ export class PurchaseService {
     };
 
     await purchase.save();
-    console.log(`Purchase paid: ${purchase._id}, isFirstPurchase: ${isFirstPurchase}`);
 
     if (isFirstPurchase) {
       await referralService.convertReferral(userId);
@@ -99,13 +97,10 @@ export class PurchaseService {
       error.statusCode = 400;
       throw error;
     }
-
-    console.log('Card validation successful');
   }
 
   async getUserPurchases(userId: string) {
     const purchases = await Purchase.find({ userId }).sort({ createdAt: -1 });
-    console.log(`Fetched ${purchases.length} purchases for user ${userId}`);
     return purchases;
   }
 
@@ -124,8 +119,6 @@ export class PurchaseService {
     ]);
 
     const totalPages = Math.ceil(total / limit);
-
-    console.log(`Fetched ${purchases.length} purchased courses for user ${userId}, page ${page}`);
 
     return {
       purchases,

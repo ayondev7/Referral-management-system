@@ -35,7 +35,6 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const result = await userService.register(validation.data);
-  console.log(`User registered: ${result.user.email}`);
   return res.status(201).json(result);
 });
 
@@ -51,7 +50,6 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const result = await userService.login(validation.data.email, validation.data.password);
-  console.log(`User logged in: ${result.user.email}`);
   return res.status(200).json(result);
 });
 
@@ -68,7 +66,6 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
   try {
     const decoded = verifyRefreshToken(validation.data.refreshToken);
     const accessToken = generateAccessToken({ id: decoded.id, email: decoded.email });
-    console.log(`Token refreshed for user: ${decoded.email}`);
     return res.status(200).json({ accessToken });
   } catch (error) {
     const err: any = new Error('Your session has expired. Please log in again');
