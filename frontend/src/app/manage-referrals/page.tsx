@@ -1,39 +1,43 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useReferralsPaginated, useReferralAnalytics, useUser } from '@/hooks';
-import ReferralsTable from '@/components/referral/ReferralsTable';
-import ReferralCharts from '@/components/referral/ReferralCharts';
-import ReferralStatsCard from '@/components/manageReferral/ReferralStatsCard';
-import ReferralCard from '@/components/dashboard/ReferralCard';
-import Pagination from '@/components/ui/Pagination';
-import Loader from '@/components/ui/Loader';
-import Tabs, { TabOption } from '@/components/ui/Tabs';
-import { Referral } from '@/types';
+import React, { useState } from "react";
+import { useReferralsPaginated, useReferralAnalytics, useUser } from "@/hooks";
+import ReferralsTable from "@/components/referral/ReferralsTable";
+import ReferralCharts from "@/components/referral/ReferralCharts";
+import ReferralStatsCard from "@/components/manageReferral/ReferralStatsCard";
+import ReferralCard from "@/components/dashboard/ReferralCard";
+import Pagination from "@/components/ui/Pagination";
+import Loader from "@/components/ui/Loader";
+import Tabs, { TabOption } from "@/components/ui/Tabs";
+import { Referral } from "@/types";
 
 const TABS = [
-  { id: 'daily' as TabOption, label: 'Daily' },
-  { id: 'monthly' as TabOption, label: 'Monthly' },
-  { id: 'yearly' as TabOption, label: 'Yearly' },
+  { id: "daily" as TabOption, label: "Daily" },
+  { id: "monthly" as TabOption, label: "Monthly" },
+  { id: "yearly" as TabOption, label: "Yearly" },
 ];
 
 export default function ManageReferralsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [timeRange, setTimeRange] = useState<TabOption>('monthly');
+  const [timeRange, setTimeRange] = useState<TabOption>("monthly");
   const itemsPerPage = 8;
 
-  const { data, isLoading, error } = useReferralsPaginated(currentPage, itemsPerPage);
-  const { data: analyticsData, isLoading: analyticsLoading } = useReferralAnalytics(timeRange);
+  const { data, isLoading, error } = useReferralsPaginated(
+    currentPage,
+    itemsPerPage
+  );
+  const { data: analyticsData, isLoading: analyticsLoading } =
+    useReferralAnalytics(timeRange);
   const { data: user } = useUser();
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const referralLink = user?.referralCode
     ? `${window.location.origin}/register?ref=${user.referralCode}`
-    : '';
+    : "";
 
   if (isLoading) {
     return (
@@ -70,7 +74,9 @@ export default function ManageReferralsPage() {
                 Error Loading Referrals
               </h3>
               <p className="text-slate-600">
-                {error instanceof Error ? error.message : 'Failed to load your referrals'}
+                {error instanceof Error
+                  ? error.message
+                  : "Failed to load your referrals"}
               </p>
             </div>
           </div>
@@ -87,33 +93,41 @@ export default function ManageReferralsPage() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col gap-4 sm:gap-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
-                  Manage Referrals
-                </h1>
-                <p className="text-sm sm:text-base text-slate-600">
-                  {totalReferrals > 0
-                    ? `You have referred ${totalReferrals} ${totalReferrals === 1 ? 'user' : 'users'}`
-                    : 'Start earning credits by referring friends'}
-                </p>
+            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+              <div className="flex flex-col">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
+                    Manage Referrals
+                  </h1>
+                  <p className="text-sm sm:text-base text-slate-600">
+                    {totalReferrals > 0
+                      ? `You have referred ${totalReferrals} ${
+                          totalReferrals === 1 ? "user" : "users"
+                        }`
+                      : "Start earning credits by referring friends"}
+                  </p>
+                </div>
+
+                <div className="flex flex-col mt-6 sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+                  <div className="flex-1 sm:flex-initial">
+                    <ReferralStatsCard referrals={referrals} />
+                  </div>
+                  <div className="flex-1 sm:flex-initial">
+                    <Tabs
+                      tabs={TABS}
+                      activeTab={timeRange}
+                      onTabChange={setTimeRange}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="flex-shrink-0 w-full sm:w-auto">
+              <div className="flex-shrink-0">
                 {referralLink && (
                   <div className="sm:ml-6">
-                    <ReferralCard referralLink={referralLink} />
+                    <ReferralCard referralLink={referralLink} compact={true} />
                   </div>
                 )}
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-              <div className="flex-1 sm:flex-initial">
-                <ReferralStatsCard referrals={referrals} />
-              </div>
-              <div className="flex-1 sm:flex-initial">
-                <Tabs tabs={TABS} activeTab={timeRange} onTabChange={setTimeRange} />
               </div>
             </div>
           </div>
@@ -124,7 +138,10 @@ export default function ManageReferralsPage() {
             <Loader />
           </div>
         ) : analyticsData?.chartData ? (
-          <ReferralCharts data={analyticsData.chartData} timeRange={timeRange} />
+          <ReferralCharts
+            data={analyticsData.chartData}
+            timeRange={timeRange}
+          />
         ) : null}
 
         <ReferralsTable referrals={referrals} />

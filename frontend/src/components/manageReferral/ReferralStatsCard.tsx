@@ -9,7 +9,7 @@ interface ReferralStatsCardProps {
 
 export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps) {
   return (
-    <div className="flex items-center gap-2 sm:gap-3 bg-white rounded-lg shadow-sm border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-3 w-full">
+    <div className="flex items-center gap-2 sm:gap-3 bg-white rounded-lg shadow-sm border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-[2px] min-w-[320px] w-full">
       <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
         <div className="bg-green-100 rounded-full p-1.5 sm:p-2">
           <svg
@@ -52,7 +52,7 @@ export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps)
             />
           </svg>
         </div>
-        <div>
+        <div className='flex gap-x-2.5'>
           <p className="text-sm text-slate-600">Pending - </p>
           <p className="text-sm text-slate-600 font-semibold">
             {referrals.filter((r: Referral) => r.status === 'pending').length}
