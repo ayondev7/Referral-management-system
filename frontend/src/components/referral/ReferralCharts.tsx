@@ -37,12 +37,12 @@ export default function ReferralCharts({ data, timeRange }: ReferralChartsProps)
       {
         data: [data.converted, data.pending],
         backgroundColor: [
-          'rgba(34, 197, 94, 0.8)',
-          'rgba(234, 179, 8, 0.8)',
+          'rgba(21, 93, 253, 0.8)',
+          'rgba(21, 93, 253, 0.4)',
         ],
         borderColor: [
-          'rgba(34, 197, 94, 1)',
-          'rgba(234, 179, 8, 1)',
+          'rgba(21, 93, 253, 1)',
+          'rgba(21, 93, 253, 0.6)',
         ],
         borderWidth: 2,
       },
@@ -82,15 +82,15 @@ export default function ReferralCharts({ data, timeRange }: ReferralChartsProps)
       {
         label: 'Converted',
         data: data.convertedData,
-        backgroundColor: 'rgba(34, 197, 94, 0.8)',
-        borderColor: 'rgb(34, 197, 94)',
+        backgroundColor: 'rgba(21, 93, 253, 0.8)',
+        borderColor: 'rgb(21, 93, 253)',
         borderWidth: 1,
       },
       {
         label: 'Pending',
         data: data.pendingData,
-        backgroundColor: 'rgba(234, 179, 8, 0.8)',
-        borderColor: 'rgb(234, 179, 8)',
+        backgroundColor: 'rgba(21, 93, 253, 0.4)',
+        borderColor: 'rgba(21, 93, 253, 0.6)',
         borderWidth: 1,
       },
     ],

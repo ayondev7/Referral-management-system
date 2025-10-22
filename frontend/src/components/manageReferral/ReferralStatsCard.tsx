@@ -11,9 +11,10 @@ export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps)
   return (
     <div className="flex items-center gap-2 sm:gap-3 bg-white rounded-lg shadow-sm border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-[2px] min-w-[320px] w-full">
       <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
-        <div className="bg-green-100 rounded-full p-1.5 sm:p-2">
+        <div className="bg-blue-100 rounded-full p-1.5 sm:p-2" style={{ backgroundColor: 'rgba(21, 93, 253, 0.1)' }}>
           <svg
-            className="w-4 h-4 text-green-600"
+            className="w-4 h-4"
+            style={{ color: '#155dfd' }}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -37,9 +38,10 @@ export default function ReferralStatsCard({ referrals }: ReferralStatsCardProps)
       <div className="w-px h-8 sm:h-10 bg-slate-200"></div>
       
       <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
-        <div className="bg-yellow-100 rounded-full p-1.5 sm:p-2">
+        <div className="bg-blue-100 rounded-full p-1.5 sm:p-2" style={{ backgroundColor: 'rgba(21, 93, 253, 0.15)' }}>
           <svg
-            className="w-4 h-4 text-yellow-600"
+            className="w-4 h-4"
+            style={{ color: '#155dfd' }}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

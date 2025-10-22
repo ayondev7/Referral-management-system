@@ -93,8 +93,8 @@ export default function ManageReferralsPage() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col gap-4 sm:gap-6">
-            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
-              <div className="flex flex-col">
+            <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+              <div className="flex flex-col w-full md:w-auto">
                 <div>
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">
                     Manage Referrals
@@ -106,6 +106,13 @@ export default function ManageReferralsPage() {
                         }`
                       : "Start earning credits by referring friends"}
                   </p>
+                </div>
+
+                {/* Mobile: Referral card first */}
+                <div className="md:hidden mt-6">
+                  {referralLink && (
+                    <ReferralCard referralLink={referralLink} compact={true} />
+                  )}
                 </div>
 
                 <div className="flex flex-col mt-6 sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -122,9 +129,10 @@ export default function ManageReferralsPage() {
                 </div>
               </div>
 
-              <div className="flex-shrink-0">
+              {/* Desktop: Referral card on the right */}
+              <div className="hidden md:flex flex-shrink-0">
                 {referralLink && (
-                  <div className="sm:ml-6">
+                  <div className="md:ml-6">
                     <ReferralCard referralLink={referralLink} compact={true} />
                   </div>
                 )}
