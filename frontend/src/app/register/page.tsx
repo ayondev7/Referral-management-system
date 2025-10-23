@@ -39,7 +39,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-slate-100">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-2xl">
         <Suspense fallback={<Loader />}>
           <RegisterContent />
         </Suspense>

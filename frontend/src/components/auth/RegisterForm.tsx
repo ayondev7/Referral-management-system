@@ -113,7 +113,7 @@ const RegisterForm: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowPassword((s) => !s)}
-            className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-700"
+            className="absolute right-3 top-11 text-slate-500 hover:text-slate-700"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
@@ -131,7 +131,7 @@ const RegisterForm: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowConfirmPassword((s) => !s)}
-            className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-700"
+            className="absolute right-3 top-11 text-slate-500 hover:text-slate-700"
             aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
           >
             {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
