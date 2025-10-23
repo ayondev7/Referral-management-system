@@ -49,7 +49,11 @@ const RegisterForm: React.FC = () => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setLoading(true);
-      const { ...registerData } = data;
+      const { confirmPassword, ...registerData } = data;
+      
+      if (registerData.referralCode && registerData.referralCode.trim() === '') {
+        delete registerData.referralCode;
+      }
 
       await authAPI.register(registerData);
 
