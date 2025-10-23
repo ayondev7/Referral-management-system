@@ -34,6 +34,12 @@ export default function CoursePurchasePage() {
       return;
     }
 
+    if (course?.isPurchased) {
+      toast.error('You have already purchased this course');
+      router.push(CLIENT_ROUTES.MY_COURSES);
+      return;
+    }
+
     if (course && !autoInitiatedRef.current) {
       autoInitiatedRef.current = true;
       initiatePurchaseMutation.mutate(

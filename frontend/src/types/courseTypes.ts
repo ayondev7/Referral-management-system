@@ -7,6 +7,7 @@ export interface Course {
   imageUrl: string;
   category?: string;
   isActive?: boolean;
+  isPurchased?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }

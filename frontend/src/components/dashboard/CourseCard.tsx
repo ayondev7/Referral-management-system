@@ -14,6 +14,7 @@ interface Course {
   price: number;
   imageUrl: string;
   category?: string;
+  isPurchased?: boolean;
 }
 
 interface CourseCardProps {
@@ -76,11 +77,17 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
                 ${course.price}
               </span>
             </div>
-            <Link href={`/courses/${course._id}/purchase?checkout=true`}>
-              <Button size="sm" className="shadow-sm">
-                Buy Now
+            {course.isPurchased ? (
+              <Button size="sm" disabled className="shadow-sm bg-blue-600/80 cursor-not-allowed">
+                Already Purchased
               </Button>
-            </Link>
+            ) : (
+              <Link href={`/courses/${course._id}/purchase?checkout=true`}>
+                <Button size="sm" className="shadow-sm">
+                  Buy Now
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
