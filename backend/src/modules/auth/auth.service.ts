@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import { User} from './auth.model';
-import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/jwt';
 import { nanoid } from 'nanoid';
 
 export class AuthService {
@@ -98,6 +98,18 @@ export class AuthService {
     };
   }
 
+  async refreshAccessToken(refreshToken: string) {
+    try {
+      const decoded = verifyRefreshToken(refreshToken);
+      const accessToken = generateAccessToken({ id: decoded.id, email: decoded.email });
+      return { accessToken };
+    } catch (error) {
+      const err: any = new Error('Your session has expired. Please log in again');
+      err.statusCode = 401;
+      throw err;
+    }
+  }
+
   async getUserById(userId: string) {
     const user = await User.findById(userId);
     if (!user) {
@@ -106,6 +118,17 @@ export class AuthService {
       throw error;
     }
     return user;
+  }
+
+  async getUserProfile(userId: string) {
+    const user = await this.getUserById(userId);
+    return {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      referralCode: user.referralCode,
+      credits: user.credits
+    };
   }
 
   async addCredits(userId: string, amount: number) {

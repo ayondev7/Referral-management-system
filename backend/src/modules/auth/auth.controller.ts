@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { asyncHandler } from '../../utils/asyncHandler';
-import { verifyRefreshToken, generateAccessToken } from '../../utils/jwt';
 import { AuthRequest } from '../../middleware/auth.middleware';
 import { registerSchema, loginSchema, refreshSchema } from './auth.validation';
 
@@ -47,15 +46,8 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
-  try {
-    const decoded = verifyRefreshToken(validation.data.refreshToken);
-    const accessToken = generateAccessToken({ id: decoded.id, email: decoded.email });
-    return res.status(200).json({ accessToken });
-  } catch (error) {
-    const err: any = new Error('Your session has expired. Please log in again');
-    err.statusCode = 401;
-    throw err;
-  }
+  const result = await authService.refreshAccessToken(validation.data.refreshToken);
+  return res.status(200).json(result);
 });
 
 export const logout = asyncHandler(async (req: Request, res: Response) => {
@@ -67,12 +59,6 @@ export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) =
     return res.status(401).json({ message: 'Unauthorized', statusCode: 401 });
   }
 
-  const user = await authService.getUserById(req.user.id);
-  return res.status(200).json({
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    referralCode: user.referralCode,
-    credits: user.credits
-  });
+  const profile = await authService.getUserProfile(req.user.id);
+  return res.status(200).json(profile);
 });
