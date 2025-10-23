@@ -71,20 +71,50 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
+        name: { label: 'Name', type: 'text' },
+        referralCode: { label: 'Referral Code', type: 'text' },
+        isRegistration: { label: 'Is Registration', type: 'text' },
+        isGuestLogin: { label: 'Is Guest Login', type: 'text' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Please provide email and password');
-        }
-
         try {
-          const response = await axios.post<BackendAuthResponse>(
-            AUTH_ROUTES.LOGIN,
-            {
+          let response;
+
+          if (credentials?.isGuestLogin === 'true') {
+            response = await axios.post<BackendAuthResponse>(AUTH_ROUTES.GUEST_LOGIN);
+          } else if (credentials?.isRegistration === 'true') {
+            const registerData: any = {
+              name: credentials.name,
               email: credentials.email,
               password: credentials.password,
+            };
+            
+            if (credentials.referralCode) {
+              registerData.referralCode = credentials.referralCode;
             }
-          );
+            
+            await axios.post(AUTH_ROUTES.REGISTER, registerData);
+            
+            response = await axios.post<BackendAuthResponse>(
+              AUTH_ROUTES.LOGIN,
+              {
+                email: credentials.email,
+                password: credentials.password,
+              }
+            );
+          } else {
+            if (!credentials?.email || !credentials?.password) {
+              throw new Error('Please provide email and password');
+            }
+
+            response = await axios.post<BackendAuthResponse>(
+              AUTH_ROUTES.LOGIN,
+              {
+                email: credentials.email,
+                password: credentials.password,
+              }
+            );
+          }
 
           const { user, accessToken, refreshToken } = response.data;
 
@@ -95,7 +125,7 @@ export const authOptions: NextAuthOptions = {
           } as NextAuthUser;
         } catch (err) {
           const errorObj = err as { response?: { data?: { message?: string }; statusText?: string } };
-          const message = errorObj.response?.data?.message || errorObj.response?.statusText || 'Login failed';
+          const message = errorObj.response?.data?.message || errorObj.response?.statusText || 'Authentication failed';
           throw new Error(message);
         }
       },

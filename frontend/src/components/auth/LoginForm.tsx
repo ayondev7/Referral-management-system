@@ -6,7 +6,6 @@ import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { authAPI } from '@lib/api';
 import Input from '@components/ui/Input';
 import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
@@ -65,12 +64,8 @@ const LoginForm: React.FC = () => {
     try {
       setGuestLoading(true);
 
-      const response = await authAPI.guestLogin();
-      const { user, accessToken } = response.data;
-
       const result = await signIn('credentials', {
-        email: user.email,
-        password: accessToken,
+        isGuestLogin: 'true',
         redirect: false,
       });
 
@@ -85,7 +80,7 @@ const LoginForm: React.FC = () => {
         router.refresh();
       }
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Guest login failed. Please try again.';
+      const errorMessage = (error as Error)?.message || 'Guest login failed. Please try again.';
       toast.error(errorMessage);
     } finally {
       setGuestLoading(false);

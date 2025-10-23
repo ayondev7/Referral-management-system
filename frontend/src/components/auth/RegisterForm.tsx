@@ -8,7 +8,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { authAPI } from '@lib/api';
 import Input from '@components/ui/Input';
 import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
@@ -55,11 +54,9 @@ const RegisterForm: React.FC = () => {
         delete registerData.referralCode;
       }
 
-      await authAPI.register(registerData);
-
       const result = await signIn('credentials', {
-        email: registerData.email,
-        password: registerData.password,
+        ...registerData,
+        isRegistration: 'true',
         redirect: false,
       });
 
@@ -74,7 +71,7 @@ const RegisterForm: React.FC = () => {
         router.refresh();
       }
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Registration failed. Please try again.';
+      const errorMessage = (error as Error)?.message || 'Registration failed. Please try again.';
       toast.error(errorMessage);
     } finally {
       setLoading(false);
