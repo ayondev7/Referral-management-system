@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
+import { authAPI } from '@lib/api';
 import Input from '@components/ui/Input';
 import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
@@ -21,6 +22,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginForm: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -59,6 +61,37 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  const handleGuestLogin = async () => {
+    try {
+      setGuestLoading(true);
+
+      const response = await authAPI.guestLogin();
+      const { user, accessToken } = response.data;
+
+      const result = await signIn('credentials', {
+        email: user.email,
+        password: accessToken,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      if (result?.ok) {
+        toast.success('Welcome Guest!');
+        router.push(CLIENT_ROUTES.DASHBOARD);
+        router.refresh();
+      }
+    } catch (error: unknown) {
+      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Guest login failed. Please try again.';
+      toast.error(errorMessage);
+    } finally {
+      setGuestLoading(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg border border-slate-200 flex flex-col gap-4 sm:gap-6">
       <h1 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 mb-1 sm:mb-2">Login</h1>
@@ -89,8 +122,19 @@ const LoginForm: React.FC = () => {
         </button>
       </div>
 
-      <Button type="submit" loading={loading} className="w-full">
+      <Button type="submit" loading={loading} disabled={guestLoading} className="w-full">
         Login
+      </Button>
+
+      <Button 
+        type="button" 
+        onClick={handleGuestLogin} 
+        loading={guestLoading} 
+        disabled={loading}
+        variant="outline" 
+        className="w-full"
+      >
+        Guest Login
       </Button>
 
       <p className="text-center text-sm text-slate-900 opacity-80">

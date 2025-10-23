@@ -53,7 +53,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     return {
       ...token,
       accessToken: response.data.accessToken,
-      accessTokenExpiry: Date.now() + 3 * 60 * 60 * 1000, // 3 hours from now
+      accessTokenExpiry: Date.now() + 3 * 60 * 60 * 1000,
     };
   } catch (error) {
     console.error('Error refreshing access token:', error);

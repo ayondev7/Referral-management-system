@@ -12,4 +12,6 @@ const authClient = axios.create({
 export const authAPI = {
   register: (data: { name: string; email: string; password: string; referralCode?: string }) =>
     authClient.post(AUTH_ROUTES.REGISTER, data),
+  guestLogin: () =>
+    authClient.post(AUTH_ROUTES.GUEST_LOGIN),
 };
