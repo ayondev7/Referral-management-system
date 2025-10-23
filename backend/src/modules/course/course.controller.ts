@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { Course } from './course.model';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { AuthRequest } from '../../middleware/auth.middleware';
+import { Purchase } from '../purchase/purchase.model';
 
-export const getAllCourses = asyncHandler(async (req: Request, res: Response) => {
+export const getAllCourses = asyncHandler(async (req: AuthRequest, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 9;
   const category = req.query.category as string;
@@ -20,14 +22,36 @@ export const getAllCourses = asyncHandler(async (req: Request, res: Response) =>
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-    .select('-__v');
+    .select('-__v')
+    .lean();
+
+  let coursesWithPurchaseStatus = courses;
+
+  if (req.user) {
+    const purchasedCourses = await Purchase.find({
+      userId: req.user.id,
+      status: 'paid'
+    }).distinct('courseId');
+
+    const purchasedCourseIds = new Set(purchasedCourses.map(id => id.toString()));
+
+    coursesWithPurchaseStatus = courses.map(course => ({
+      ...course,
+      isPurchased: purchasedCourseIds.has(course._id.toString())
+    }));
+  } else {
+    coursesWithPurchaseStatus = courses.map(course => ({
+      ...course,
+      isPurchased: false
+    }));
+  }
 
   const totalPages = Math.ceil(total / limit);
 
   res.status(200).json({
     success: true,
     data: {
-      courses,
+      courses: coursesWithPurchaseStatus,
       pagination: {
         currentPage: page,
         totalPages,
@@ -40,10 +64,10 @@ export const getAllCourses = asyncHandler(async (req: Request, res: Response) =>
   });
 });
 
-export const getCourseById = asyncHandler(async (req: Request, res: Response) => {
+export const getCourseById = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
 
-  const course = await Course.findOne({ _id: id, isActive: true }).select('-__v');
+  const course = await Course.findOne({ _id: id, isActive: true }).select('-__v').lean();
 
   if (!course) {
     res.status(404).json({
@@ -53,23 +77,59 @@ export const getCourseById = asyncHandler(async (req: Request, res: Response) =>
     return;
   }
 
+  let isPurchased = false;
+
+  if (req.user) {
+    const purchase = await Purchase.findOne({
+      userId: req.user.id,
+      courseId: id,
+      status: 'paid'
+    });
+    isPurchased = !!purchase;
+  }
+
   res.status(200).json({
     success: true,
-    data: course
+    data: {
+      ...course,
+      isPurchased
+    }
   });
 });
 
-export const getLatestCourses = asyncHandler(async (req: Request, res: Response) => {
+export const getLatestCourses = asyncHandler(async (req: AuthRequest, res: Response) => {
   const limit = parseInt(req.query.limit as string) || 6;
 
   const courses = await Course.find({ isActive: true })
     .sort({ createdAt: -1 })
     .limit(limit)
-    .select('-__v');
+    .select('-__v')
+    .lean();
+
+  let coursesWithPurchaseStatus = courses;
+
+  if (req.user) {
+    const purchasedCourses = await Purchase.find({
+      userId: req.user.id,
+      status: 'paid'
+    }).distinct('courseId');
+
+    const purchasedCourseIds = new Set(purchasedCourses.map(id => id.toString()));
+
+    coursesWithPurchaseStatus = courses.map(course => ({
+      ...course,
+      isPurchased: purchasedCourseIds.has(course._id.toString())
+    }));
+  } else {
+    coursesWithPurchaseStatus = courses.map(course => ({
+      ...course,
+      isPurchased: false
+    }));
+  }
 
   res.status(200).json({
     success: true,
-    data: courses
+    data: coursesWithPurchaseStatus
   });
 });
 
