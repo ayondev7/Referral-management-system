@@ -54,6 +54,11 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
   return res.status(200).json({ message: 'Logged out successfully' });
 });
 
+export const guestLogin = asyncHandler(async (req: Request, res: Response) => {
+  const result = await authService.guestLogin();
+  return res.status(200).json(result);
+});
+
 export const getProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
   if (!req.user) {
     return res.status(401).json({ message: 'Unauthorized', statusCode: 401 });

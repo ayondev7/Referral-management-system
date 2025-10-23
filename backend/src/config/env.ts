@@ -8,5 +8,7 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET,
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
   nodeEnv: process.env.NODE_ENV,
-  corsOrigin: process.env.CORS_ORIGIN
+  corsOrigin: process.env.CORS_ORIGIN,
+  guestEmail: process.env.GUEST_EMAIL,
+  guestPassword: process.env.GUEST_PASSWORD
 };

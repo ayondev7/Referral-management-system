@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { User} from './auth.model';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/jwt';
 import { nanoid } from 'nanoid';
+import { config } from '../../config/env';
 
 export class AuthService {
   async register(data: {
@@ -108,6 +109,16 @@ export class AuthService {
       err.statusCode = 401;
       throw err;
     }
+  }
+
+  async guestLogin() {
+    if (!config.guestEmail || !config.guestPassword) {
+      const error: any = new Error('Guest login is not configured');
+      error.statusCode = 500;
+      throw error;
+    }
+
+    return this.login(config.guestEmail, config.guestPassword);
   }
 
   async getUserById(userId: string) {
