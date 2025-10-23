@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +9,7 @@ import toast from 'react-hot-toast';
 import Input from '@components/ui/Input';
 import Button from '@components/ui/Button';
 import { CLIENT_ROUTES } from '@/routes';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
@@ -21,6 +21,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginForm: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -70,13 +71,23 @@ const LoginForm: React.FC = () => {
         placeholder="Enter your email"
       />
 
-      <Input
-        label="Password"
-        type="password"
-        {...register('password')}
-        error={errors.password?.message}
-        placeholder="Enter your password"
-      />
+      <div className="relative">
+        <Input
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          {...register('password')}
+          error={errors.password?.message}
+          placeholder="Enter your password"
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword((s) => !s)}
+          className="absolute right-3 top-11 text-slate-500 hover:text-slate-700"
+          aria-label={showPassword ? 'Hide password' : 'Show password'}
+        >
+          {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+        </button>
+      </div>
 
       <Button type="submit" loading={loading} className="w-full">
         Login
