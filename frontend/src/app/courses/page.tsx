@@ -48,11 +48,11 @@ export default function CoursesPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-140px)] p-8 bg-slate-50">
+    <div className="min-h-[calc(100vh-140px)] py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8 bg-slate-50">
       <div className="max-w-screen-xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">All Courses</h1>
-          <p className="text-base text-slate-900 opacity-70">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">All Courses</h1>
+          <p className="text-sm sm:text-base text-slate-900 opacity-70">
             Browse and purchase from our collection of {pagination.totalCourses} courses
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function CoursesPage() {
           </div>
         ) : courses.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
               {courses.map((course, index) => (
                 <CourseCard key={course._id} course={course} index={index} />
               ))}
@@ -73,7 +73,7 @@ export default function CoursesPage() {
               currentPage={pagination.currentPage}
               totalPages={pagination.totalPages}
               onPageChange={handlePageChange}
-              className="mb-8"
+              className="mb-6 sm:mb-8"
             />
           </>
         ) : (

@@ -84,6 +84,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           {...register('cardNumber')}
           error={errors.cardNumber?.message}
           placeholder="1234 5678 9012 3456"
+          autoComplete="cc-number"
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -92,12 +93,14 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             {...register('expiry')}
             error={errors.expiry?.message}
             placeholder="MM/YY"
+            autoComplete="cc-exp"
           />
           <Input
             label="CVV"
             {...register('cvv')}
             error={errors.cvv?.message}
             placeholder="123"
+            autoComplete="cc-csc"
           />
         </div>
 
@@ -106,6 +109,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           {...register('cardHolder')}
           error={errors.cardHolder?.message}
           placeholder="John Doe"
+          autoComplete="cc-name"
         />
 
         <div className="flex gap-3 sm:gap-4 mt-2 sm:mt-4 flex-col sm:flex-row">

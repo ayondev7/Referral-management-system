@@ -25,16 +25,16 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-140px)] p-8 bg-slate-50">
+    <div className="min-h-[calc(100vh-140px)] py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8 bg-slate-50">
       <div className="max-w-screen-xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
-          <p className="text-base text-slate-900 opacity-70">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
+          <p className="text-sm sm:text-base text-slate-900 opacity-70">
             Manage your referrals and purchase courses
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <StatsCard
             title="Total Referrals"
             value={dashboard.totalReferredUsers}
@@ -54,11 +54,11 @@ export default function DashboardPage() {
 
         <ReferralCard referralLink={dashboard.referralLink} />
 
-        <div className="mt-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-slate-900">Latest Courses</h2>
+        <div className="mt-6 sm:mt-8">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Latest Courses</h2>
             <Link href={CLIENT_ROUTES.COURSES}>
-              <Button variant="outline" size="sm">
+              <Button variant="primary" size="sm">
                 View All Courses
               </Button>
             </Link>
@@ -69,7 +69,7 @@ export default function DashboardPage() {
               <Loader size="md" />
             </div>
           ) : courses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {courses.map((course, index) => (
                 <CourseCard key={course._id} course={course} index={index} />
               ))}

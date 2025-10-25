@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
-import Button from '@components/ui/Button';
+import React from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import Button from "@components/ui/Button";
 
 interface Course {
   _id: string;
@@ -23,10 +23,9 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
-
   const truncatedDescription =
     course.description.length > 120
-      ? course.description.substring(0, 120) + '...'
+      ? course.description.substring(0, 120) + "..."
       : course.description;
 
   return (
@@ -37,8 +36,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
       className="group"
     >
       <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col border border-slate-200">
-
-  <div className="relative w-full h-48 overflow-hidden bg-blue-50">
+        <div className="relative w-full h-48 overflow-hidden bg-blue-50">
           <Image
             src={course.imageUrl}
             alt={course.title}
@@ -47,38 +45,37 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           {course.category && (
-            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-              <span className="text-xs font-semibold text-slate-700">
+            <div className="absolute top-3 right-3 bg-[#edf9fd] backdrop-blur-sm flex items-center justify-center px-3 py-2 rounded-full">
+              <span className="text-xs font-semibold text-blue-600">
                 {course.category}
               </span>
             </div>
           )}
         </div>
 
-
         <div className="p-5 flex flex-col flex-grow">
-
           <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
             {course.title}
           </h3>
 
-
-          <p className="text-sm text-slate-600 mb-3">{course.author}</p>
-
+          <p className="text-sm text-slate-600 mb-3 font-medium">{course.author}</p>
 
           <p className="text-sm text-slate-600 mb-4 flex-grow line-clamp-3">
             {truncatedDescription}
           </p>
 
-
           <div className="flex items-center justify-between pt-4 border-t border-slate-200">
             <div className="flex flex-col">
-              <span className="text-2xl font-bold text-blue-600">
+              <span className="text-2xl font-bold text-slate-900 group-hover:text-blue-600">
                 ${course.price}
               </span>
             </div>
             {course.isPurchased ? (
-              <Button size="sm" disabled className="shadow-sm bg-blue-600/80 cursor-not-allowed">
+              <Button
+                size="sm"
+                disabled
+                className="shadow-sm bg-blue-600/80 cursor-not-allowed"
+              >
                 Already Purchased
               </Button>
             ) : (

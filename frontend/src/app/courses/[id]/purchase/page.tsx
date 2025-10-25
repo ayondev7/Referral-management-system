@@ -63,7 +63,7 @@ export default function CoursePurchasePage() {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-140px)] flex items-center justify-center bg-slate-50 px-4">
+      <div className="min-h-[calc(100vh-140px)] flex items-center justify-center bg-slate-50 py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8">
         <Loader size="lg" />
       </div>
     );
@@ -74,7 +74,7 @@ export default function CoursePurchasePage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-140px)] py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8 bg-slate-50">
+    <div className="min-h-[calc(100vh-140px)] py-4 sm:py-6 lg:py-12 px-3 sm:px-4 lg:px-8 bg-slate-50">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -83,7 +83,7 @@ export default function CoursePurchasePage() {
         >
           <Card>
             <div className="p-4 sm:p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-x-20">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-x-20">
                 <div>
                   <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4">{course.title}</h2>
                   <div className="mb-4">

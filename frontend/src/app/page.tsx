@@ -19,7 +19,7 @@ export default function Home() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-8 bg-slate-100">
+      <div className="min-h-screen flex items-center justify-center py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8 bg-slate-100">
         <Loader />
       </div>
     );
@@ -27,14 +27,14 @@ export default function Home() {
 
   if (status === 'authenticated') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-8 bg-slate-100">
+      <div className="min-h-screen flex items-center justify-center py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8 bg-slate-100">
         <Loader />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8 bg-slate-100">
+    <div className="min-h-screen flex items-center justify-center py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8 bg-slate-100">
       <div className="w-full max-w-md">
         <LoginForm />
       </div>
