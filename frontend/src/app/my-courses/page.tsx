@@ -101,6 +101,7 @@ export default function MyCoursesPage() {
                 tabs={VIEW_TABS}
                 activeTab={viewMode}
                 onTabChange={setViewMode}
+                className="lg:max-w-[300px]"
               />
           </div>
         </div>

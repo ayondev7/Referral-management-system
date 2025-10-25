@@ -123,6 +123,7 @@ export default function ManageReferralsPage() {
                       tabs={TABS}
                       activeTab={timeRange}
                       onTabChange={setTimeRange}
+                      className="lg:w-[350px]"
                     />
                   </div>
                 </div>

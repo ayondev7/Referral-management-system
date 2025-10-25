@@ -13,11 +13,12 @@ interface TabsProps<T extends string = TabOption> {
   tabs: Tab<T>[];
   activeTab: T;
   onTabChange: (tab: T) => void;
+  className?: string;
 }
 
-export default function Tabs<T extends string = TabOption>({ tabs, activeTab, onTabChange }: TabsProps<T>) {
+export default function Tabs<T extends string = TabOption>({ tabs, activeTab, onTabChange, className }: TabsProps<T>) {
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm border border-slate-200 p-1">
+    <div className={`w-full bg-white rounded-lg shadow-sm border border-slate-200 p-1 ${className ?? ''}`}>
       <div className="flex w-full gap-2 rounded-md overflow-hidden">
         {tabs.map((tab) => (
           <button
