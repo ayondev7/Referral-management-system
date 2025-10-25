@@ -50,6 +50,7 @@ export function usePayPurchase() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['purchasedCourses'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
   });
 }
