@@ -48,8 +48,13 @@ const RegisterForm: React.FC = () => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setLoading(true);
-      const { confirmPassword, ...registerData } = data;
-      
+      const registerData = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        referralCode: data.referralCode,
+      } as { name: string; email: string; password: string; referralCode?: string };
+
       if (registerData.referralCode && registerData.referralCode.trim() === '') {
         delete registerData.referralCode;
       }

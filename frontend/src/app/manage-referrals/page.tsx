@@ -9,7 +9,6 @@ import ReferralCard from "@/components/dashboard/ReferralCard";
 import Pagination from "@/components/ui/Pagination";
 import Loader from "@/components/ui/Loader";
 import Tabs, { TabOption } from "@/components/ui/Tabs";
-import { Referral } from "@/types";
 
 const TABS = [
   { id: "daily" as TabOption, label: "Daily" },
@@ -145,10 +144,7 @@ export default function ManageReferralsPage() {
             <Loader />
           </div>
         ) : analyticsData?.chartData ? (
-          <ReferralCharts
-            data={analyticsData.chartData}
-            timeRange={timeRange}
-          />
+          <ReferralCharts data={analyticsData.chartData} />
         ) : null}
 
         <ReferralsTable referrals={referrals} />

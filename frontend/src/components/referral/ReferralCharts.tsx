@@ -12,7 +12,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
-import { TabOption } from '@/components/ui/Tabs';
 import { ReferralChartData } from '@/types';
 
 ChartJS.register(
@@ -27,10 +26,9 @@ ChartJS.register(
 
 interface ReferralChartsProps {
   data: ReferralChartData;
-  timeRange: TabOption;
 }
 
-export default function ReferralCharts({ data, timeRange }: ReferralChartsProps) {
+export default function ReferralCharts({ data }: ReferralChartsProps) {
   const doughnutData = {
     labels: ['Converted', 'Pending'],
     datasets: [

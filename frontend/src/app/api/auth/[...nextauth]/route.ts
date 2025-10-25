@@ -83,14 +83,14 @@ export const authOptions: NextAuthOptions = {
           if (credentials?.isGuestLogin === 'true') {
             response = await axios.post<BackendAuthResponse>(AUTH_ROUTES.GUEST_LOGIN);
           } else if (credentials?.isRegistration === 'true') {
-            const registerData: any = {
-              name: credentials.name,
-              email: credentials.email,
-              password: credentials.password,
+            const registerData = {
+              name: credentials?.name,
+              email: credentials?.email,
+              password: credentials?.password,
             };
             
-            if (credentials.referralCode) {
-              registerData.referralCode = credentials.referralCode;
+            if (credentials?.referralCode) {
+              (registerData as { referralCode?: string }).referralCode = credentials.referralCode;
             }
             
             await axios.post(AUTH_ROUTES.REGISTER, registerData);
