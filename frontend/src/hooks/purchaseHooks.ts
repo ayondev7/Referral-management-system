@@ -51,6 +51,9 @@ export function usePayPurchase() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['purchasedCourses'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['course'] });
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
     },
   });
 }
