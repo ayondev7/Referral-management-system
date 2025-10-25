@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';
 import Image from 'next/image';
-import { useAuthStore } from '@store/authStore';
 import { useSession } from 'next-auth/react';
 import { useCourse, useInitiatePurchase } from '@/hooks';
 import Card from '@components/ui/Card';
@@ -16,12 +15,7 @@ export default function CoursePurchasePage() {
   const router = useRouter();
   const params = useParams();
   const courseId = params.id as string;
-  const { isAuthenticated: storeAuth } = useAuthStore();
-  const { data: session, status } = useSession();
-
-  type SessionWithToken = { accessToken?: string };
-  const hasAccessToken = !!(session && 'accessToken' in session && (session as SessionWithToken).accessToken);
-  const isAuthenticated = status === 'authenticated' || !!storeAuth || hasAccessToken;
+  const { status } = useSession();
   const autoInitiatedRef = useRef(false);
   
   const { data: course, isLoading: loading } = useCourse(courseId);
@@ -29,11 +23,6 @@ export default function CoursePurchasePage() {
   const [purchaseId, setPurchaseId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push(CLIENT_ROUTES.HOME);
-      return;
-    }
-
     if (course?.isPurchased) {
       toast.error('You have already purchased this course');
       router.push(CLIENT_ROUTES.MY_COURSES);
@@ -59,9 +48,9 @@ export default function CoursePurchasePage() {
         }
       );
     }
-  }, [course, isAuthenticated, router, initiatePurchaseMutation]);
+  }, [course, router, initiatePurchaseMutation]);
 
-  if (loading) {
+  if (status === 'loading' || loading) {
     return (
       <div className="min-h-[calc(100vh-140px)] flex items-center justify-center bg-slate-50 py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8">
         <Loader size="lg" />

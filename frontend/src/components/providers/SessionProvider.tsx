@@ -8,7 +8,7 @@ function SessionErrorHandler({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (session?.error === 'RefreshAccessTokenError') {
-      signOut({ callbackUrl: '/' });
+      signOut({ callbackUrl: '/', redirect: true });
     }
   }, [session]);
 
@@ -17,7 +17,7 @@ function SessionErrorHandler({ children }: { children: ReactNode }) {
 
 function SessionProvider({ children }: { children: ReactNode }) {
   return (
-    <NextAuthSessionProvider refetchInterval={15 * 60} refetchOnWindowFocus={false}>
+    <NextAuthSessionProvider refetchInterval={15 * 60} refetchOnWindowFocus={true}>
       <SessionErrorHandler>
         {children}
       </SessionErrorHandler>

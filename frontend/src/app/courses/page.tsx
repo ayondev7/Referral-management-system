@@ -1,9 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { CLIENT_ROUTES } from '@/routes';
-import { useAuthStore } from '@store/authStore';
+import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useCourses } from '@/hooks';
 import CourseCard from '@components/dashboard/CourseCard';
@@ -11,13 +8,7 @@ import Loader from '@components/ui/Loader';
 import Pagination from '@components/ui/Pagination';
 
 export default function CoursesPage() {
-  const router = useRouter();
-  const { isAuthenticated: storeAuth } = useAuthStore();
-  const { data: session, status } = useSession();
-
-  type SessionWithToken = { accessToken?: string };
-  const hasAccessToken = !!(session && 'accessToken' in session && (session as SessionWithToken).accessToken);
-  const isAuthenticated = status === 'authenticated' || !!storeAuth || hasAccessToken;
+  const { status } = useSession();
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading } = useCourses(currentPage, 9);
@@ -31,20 +22,17 @@ export default function CoursesPage() {
     hasPreviousPage: false,
   };
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push(CLIENT_ROUTES.HOME);
-      return;
-    }
-  }, [isAuthenticated, router]);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (!isAuthenticated) {
-    return null;
+  if (status === 'loading') {
+    return (
+      <div className="min-h-[calc(100vh-140px)] flex items-center justify-center py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-8 bg-slate-50">
+        <Loader size="lg" />
+      </div>
+    );
   }
 
   return (
