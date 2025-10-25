@@ -108,7 +108,6 @@ export default function ManageReferralsPage() {
                   </p>
                 </div>
 
-                {/* Mobile: Referral card first */}
                 <div className="md:hidden mt-6">
                   {referralLink && (
                     <ReferralCard referralLink={referralLink} compact={true} />
@@ -129,7 +128,6 @@ export default function ManageReferralsPage() {
                 </div>
               </div>
 
-              {/* Desktop: Referral card on the right */}
               <div className="hidden md:flex flex-shrink-0">
                 {referralLink && (
                   <div className="md:ml-6">
