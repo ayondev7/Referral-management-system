@@ -2,9 +2,11 @@ import React from 'react';
 import { LuLoader } from 'react-icons/lu';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
   children: React.ReactNode;
 }
 
@@ -12,6 +14,8 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
   loading = false,
+  icon,
+  iconPosition = 'right',
   children,
   className = '',
   disabled,
@@ -24,6 +28,7 @@ const Button: React.FC<ButtonProps> = ({
     secondary: 'bg-amber-600 text-white shadow-sm hover:bg-amber-700 hover:shadow-md',
     outline: 'bg-transparent text-blue-600 border-2 border-blue-600 hover:bg-blue-600 hover:text-white',
     danger: 'bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-md',
+    ghost: 'bg-transparent text-slate-700 hover:text-blue-600',
   };
   
   const sizeClasses = {
@@ -46,7 +51,15 @@ const Button: React.FC<ButtonProps> = ({
           Loading...
         </>
       ) : (
-        children
+        <>
+          {icon && iconPosition === 'left' && (
+            <span className="mr-2">{icon}</span>
+          )}
+          {children}
+          {icon && iconPosition === 'right' && (
+            <span className="ml-2">{icon}</span>
+          )}
+        </>
       )}
     </button>
   );

@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { IoIosArrowForward } from 'react-icons/io';
 import { useDashboard, useLatestCourses } from '@/hooks';
 import StatsCard from '@components/dashboard/StatsCard';
 import ReferralCard from '@components/dashboard/ReferralCard';
@@ -58,7 +59,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Latest Courses</h2>
             <Link href={CLIENT_ROUTES.COURSES}>
-              <Button variant="primary" size="sm">
+              <Button variant="ghost" size="sm" className='flex justify-center items-center' icon={<IoIosArrowForward className="w-4 h-4" />}>
                 View All Courses
               </Button>
             </Link>

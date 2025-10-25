@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { CLIENT_ROUTES } from '@/routes';
+import { NAV_LINKS } from '@/config/navConfig';
 import Image from 'next/image';
 import Button from '@components/ui/Button';
 import { LuX } from 'react-icons/lu';
@@ -28,13 +29,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path || pathname?.startsWith(path);
-
-  const navLinks = [
-    { href: CLIENT_ROUTES.DASHBOARD, label: 'Dashboard' },
-    { href: CLIENT_ROUTES.COURSES, label: 'Courses' },
-    { href: CLIENT_ROUTES.MY_COURSES, label: 'My Courses' },
-    { href: CLIENT_ROUTES.MANAGE_REFERRALS, label: 'Manage Referrals' },
-  ];
 
   return (
     <>
@@ -66,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
           <div className="flex-1 overflow-y-auto py-6">
             <nav className="px-4 space-y-2">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

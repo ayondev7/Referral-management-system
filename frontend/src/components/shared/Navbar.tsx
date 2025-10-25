@@ -9,6 +9,7 @@ import { LuMenu } from 'react-icons/lu';
 import Button from '@components/ui/Button';
 import Sidebar from '@components/shared/Sidebar';
 import { CLIENT_ROUTES } from '@/routes';
+import { NAV_LINKS } from '@/config/navConfig';
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -59,46 +60,19 @@ const Navbar: React.FC = () => {
             
             {isAuthenticated && (
               <nav className="hidden lg:flex items-center gap-6">
-                <Link
-                  href={CLIENT_ROUTES.DASHBOARD}
-                  className={`text-sm font-medium transition-colors ${
-                    isActive(CLIENT_ROUTES.DASHBOARD)
-                      ? 'text-blue-600'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href={CLIENT_ROUTES.COURSES}
-                  className={`text-sm font-medium transition-colors ${
-                    isActive(CLIENT_ROUTES.COURSES) || pathname?.startsWith(CLIENT_ROUTES.COURSES)
-                      ? 'text-blue-600'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  Courses
-                </Link>
-                <Link
-                  href={CLIENT_ROUTES.MY_COURSES}
-                  className={`text-sm font-medium transition-colors ${
-                    isActive(CLIENT_ROUTES.MY_COURSES)
-                      ? 'text-blue-600'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  My Courses
-                </Link>
-                <Link
-                  href={CLIENT_ROUTES.MANAGE_REFERRALS}
-                  className={`text-sm font-medium transition-colors ${
-                    isActive(CLIENT_ROUTES.MANAGE_REFERRALS)
-                      ? 'text-blue-600'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  Manage Referrals
-                </Link>
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`text-sm font-medium transition-colors ${
+                      isActive(link.href) || pathname?.startsWith(link.href)
+                        ? 'text-blue-600'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
               </nav>
             )}
           </div>
@@ -129,7 +103,7 @@ const Navbar: React.FC = () => {
               <span className="hidden md:inline-block text-xs sm:text-sm font-semibold text-blue-500 bg-blue-50 px-2 sm:px-3 py-1.5 rounded-lg">
                 Credits: {user.credits}
               </span>
-              <Button onClick={handleLogout} variant="outline" size="sm" loading={loggingOut} className="!hidden lg:!inline-flex">
+              <Button onClick={handleLogout} variant="ghost" size="sm" loading={loggingOut} className="!hidden lg:!inline-flex">
                 Logout
               </Button>
             </div>
