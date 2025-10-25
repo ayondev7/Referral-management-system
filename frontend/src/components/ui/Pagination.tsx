@@ -77,7 +77,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === 1}
         className={`
           flex items-center justify-center
-          h-10 px-4 rounded-md
+          h-10 px-2.5 rounded-md
           text-sm font-medium
           transition-colors duration-200
           ${
@@ -89,7 +89,7 @@ const Pagination: React.FC<PaginationProps> = ({
         aria-label="Go to previous page"
       >
         <svg
-          className="w-4 h-4 mr-1"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -101,7 +101,6 @@ const Pagination: React.FC<PaginationProps> = ({
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        Previous
       </button>
 
       <div className="flex items-center gap-1">
@@ -149,7 +148,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === totalPages}
         className={`
           flex items-center justify-center
-          h-10 px-4 rounded-md
+          h-10 px-2.5 rounded-md
           text-sm font-medium
           transition-colors duration-200
           ${
@@ -160,9 +159,8 @@ const Pagination: React.FC<PaginationProps> = ({
         `}
         aria-label="Go to next page"
       >
-        Next
         <svg
-          className="w-4 h-4 ml-1"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

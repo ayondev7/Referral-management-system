@@ -1,4 +1,4 @@
-import { useMutation, useQuery, apiRequest } from '@/hooks';
+import { useMutation, useQuery, useQueryClient, apiRequest } from '@/hooks';
 import { PURCHASE_ROUTES } from '@/routes/purchaseRoutes';
 import { PurchasedCoursesResponse } from '@/types';
 
@@ -33,6 +33,8 @@ export function useInitiatePurchase() {
 }
 
 export function usePayPurchase() {
+  const queryClient = useQueryClient();
+  
   return useMutation<void, Error, PayPurchaseParams>({
     mutationFn: async (params) => {
       await apiRequest<void>({
@@ -45,6 +47,9 @@ export function usePayPurchase() {
           cardHolder: params.cardHolder,
         },
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['purchasedCourses'] });
     },
   });
 }
