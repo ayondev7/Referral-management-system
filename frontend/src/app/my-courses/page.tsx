@@ -1,30 +1,33 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { usePurchasedCourses } from '@/hooks';
-import PurchasedCoursesTable from '@/components/purchase/PurchasedCoursesTable';
-import Pagination from '@/components/ui/Pagination';
-import Loader from '@/components/ui/Loader';
-import Tabs from '@/components/ui/Tabs';
+import React, { useState } from "react";
+import Image from "next/image";
+import { usePurchasedCourses } from "@/hooks";
+import PurchasedCoursesTable from "@/components/purchase/PurchasedCoursesTable";
+import Pagination from "@/components/ui/Pagination";
+import Loader from "@/components/ui/Loader";
+import Tabs from "@/components/ui/Tabs";
 
-type ViewMode = 'table' | 'grid';
+type ViewMode = "table" | "grid";
 
 const VIEW_TABS = [
-  { id: 'table' as ViewMode, label: 'Table View' },
-  { id: 'grid' as ViewMode, label: 'Grid View' },
+  { id: "table" as ViewMode, label: "Table View" },
+  { id: "grid" as ViewMode, label: "Grid View" },
 ];
 
 export default function MyCoursesPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
   const itemsPerPage = 8;
 
-  const { data, isLoading, error } = usePurchasedCourses(currentPage, itemsPerPage);
+  const { data, isLoading, error } = usePurchasedCourses(
+    currentPage,
+    itemsPerPage
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (isLoading) {
@@ -62,7 +65,9 @@ export default function MyCoursesPage() {
                 Error Loading Courses
               </h3>
               <p className="text-slate-600">
-                {error instanceof Error ? error.message : 'Failed to load your purchased courses'}
+                {error instanceof Error
+                  ? error.message
+                  : "Failed to load your purchased courses"}
               </p>
             </div>
           </div>
@@ -78,27 +83,29 @@ export default function MyCoursesPage() {
     <div className="min-h-screen bg-slate-50 py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6 xl:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 sm:mb-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
                 My Courses
               </h1>
               <p className="text-sm sm:text-base text-slate-600">
                 {totalPurchases > 0
-                  ? `You have purchased ${totalPurchases} ${totalPurchases === 1 ? 'course' : 'courses'}`
-                  : 'Start your learning journey by purchasing your first course'}
+                  ? `You have purchased ${totalPurchases} ${
+                      totalPurchases === 1 ? "course" : "courses"
+                    }`
+                  : "Start your learning journey by purchasing your first course"}
               </p>
             </div>
-            
-            <Tabs<ViewMode>
-              tabs={VIEW_TABS} 
-              activeTab={viewMode} 
-              onTabChange={setViewMode} 
-            />
+
+              <Tabs<ViewMode>
+                tabs={VIEW_TABS}
+                activeTab={viewMode}
+                onTabChange={setViewMode}
+              />
           </div>
         </div>
 
-        {viewMode === 'table' ? (
+        {viewMode === "table" ? (
           <PurchasedCoursesTable purchases={purchases} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -153,7 +160,7 @@ export default function MyCoursesPage() {
                     {purchase.courseId?.title || purchase.courseName}
                   </h3>
                   <p className="text-sm text-slate-600 mb-3">
-                    {purchase.courseId?.author || 'N/A'}
+                    {purchase.courseId?.author || "N/A"}
                   </p>
                   <div className="flex items-center justify-between mb-3">
                     {purchase.courseId?.category && (
@@ -167,10 +174,13 @@ export default function MyCoursesPage() {
                   </div>
                   <div className="pt-3 border-t border-slate-200">
                     <p className="text-xs text-slate-500">
-                      Purchased on {new Date(purchase.paymentInfo?.paidAt || purchase.createdAt).toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'short', 
-                        day: 'numeric' 
+                      Purchased on{" "}
+                      {new Date(
+                        purchase.paymentInfo?.paidAt || purchase.createdAt
+                      ).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
                       })}
                     </p>
                   </div>
