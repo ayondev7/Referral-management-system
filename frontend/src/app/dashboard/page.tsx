@@ -37,17 +37,17 @@ export default function DashboardPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <StatsCard
-            title="Total Referrals"
+            title="Referred Users"
             value={dashboard.totalReferredUsers}
             gradient="gradient-blue"
           />
           <StatsCard
-            title="Converted Referrals"
+            title="Converted Users"
             value={dashboard.convertedUsers}
             gradient="gradient-green"
           />
           <StatsCard
-            title="Total Credits"
+            title="Total Credits Earned"
             value={dashboard.totalCredits}
             gradient="gradient-purple"
           />
