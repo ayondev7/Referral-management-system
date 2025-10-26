@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-4 lg:gap-8">
             <Link href={CLIENT_ROUTES.HOME}>
               <h1 className="text-xl sm:text-2xl font-bold text-blue-500 cursor-pointer">
-                CourseHub
+                Referral & Credit System
               </h1>
             </Link>
             

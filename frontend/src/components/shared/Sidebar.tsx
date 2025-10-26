@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-6 border-b border-slate-200">
             <Link href={CLIENT_ROUTES.DASHBOARD} onClick={onClose}>
-              <h1 className="text-2xl font-bold text-blue-500">CourseHub</h1>
+              <h1 className="text-2xl font-bold text-blue-500">Referral & Credit System</h1>
             </Link>
             <button
               onClick={onClose}
